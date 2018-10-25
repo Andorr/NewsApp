@@ -37,6 +37,9 @@ const styles: Object = {
     item5: {gridArea: 'e', '@media only screen and (max-width: 600px)': {gridArea: 'unset'}},
     left: {
         gridTemplateAreas: "'a b b' 'c d e'",
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateAreas: 'unset',
+        },
     }
 }
 

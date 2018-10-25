@@ -66,6 +66,7 @@ class LiveFeed extends React.Component<P> {
                 <Flex className={classes.wrapper}>
                     {data && data.slice(0, 2).map((value, i) => (
                         <FeedItem
+                            key={i}
                             className={classes.item}
                             title={value.title}
                             subtitle={value.subtitle}
