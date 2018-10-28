@@ -3,3 +3,40 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.pulse {
+  display: block;
+  min-width: 14px;
+  min-height: 14px;
+  border-radius: 100%;
+  background: rgba(255,255,255,1);
+  box-shadow: 0 0 0 rgba(255,255,255,0.8);
+  animation: pulse 2.1s infinite;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+      -webkit-box-shadow: 0 0 0 0 rgb(151, 41, 41, 0.7);
+  }
+  90% {
+      -webkit-box-shadow: 0 0 0 10px rgb(151, 41, 41, 0);
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgb(151, 41, 41, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+      -moz-box-shadow: 0 0 0 0 rgb(151, 41, 41, 0.7);
+      box-shadow: 0 0 0 0 rgb(151, 41, 41, 0.9);
+  }
+  90% {
+      -moz-box-shadow: 0 0 0 10px rgb(151, 41, 41, 0);
+      box-shadow: 0 0 0 10px rgb(151, 41, 41, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgb(151, 41, 41, 0);
+      box-shadow: 0 0 0 0 rgb(151, 41, 41, 0);
+  }
+}
+

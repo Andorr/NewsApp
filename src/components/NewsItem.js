@@ -2,19 +2,25 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 // Project Components
+import Pulse from '../components/Pulse';
 
 type P = {
     classes: Object,
     className: string,
     image?: string,
     title?: string,
+    subtitle?: string,
     large: boolean,
+    to: string,
+
+    highlight: ?string,
 }
 
 const styles: Object = {
@@ -33,7 +39,13 @@ const styles: Object = {
         maxHeight: 400,
     },
     imageWrapper: {
-        overflow: 'hidden',
+        minHeight: 200,
+        backgroundColor: 'whitesmoke',
+        position: 'relative',
+
+        '@media only screen and (max-width: 600px)': {
+            minHeight: 100,
+        }
     },
     textWrapper: {
         padding: 28,
@@ -44,6 +56,12 @@ const styles: Object = {
     lgText: {
         fontSize: '3rem',
     },
+    pulse: {
+        position: 'absolute',
+        bottom: '-14px',
+        height: 'auto',
+        right: 30,
+    }
 }
 
 class NewsItem extends Component<P> {
@@ -52,16 +70,23 @@ class NewsItem extends Component<P> {
         const {classes, className, image, title, subtitle} = this.props;
         return (
             <Paper className={classNames(classes.root, className)} square elevation={1}>
-                <div className={classes.imageWrapper}>
-                    <img className={classNames(classes.image, this.props.large ? classes.large : '')} src={image} alt={title} />
-                </div>
-                <div className={classes.textWrapper}>
-                    <Typography className={classNames(classes.text, this.props.large ? classes.lgText : '')} gutterBottom >{title}</Typography>
-                    {this.props.large && <Typography variant='title' >{subtitle}</Typography>}
-                </div>
+                <Link to={this.props.to} style={{textDecoration: 'none'}}>
+                    <div className={classes.imageWrapper}>
+                        <img className={classNames(classes.image, this.props.large ? classes.large : '')} src={image} alt={title} />
+                        {this.props.highlight && <Pulse className={classes.pulse} label={this.props.highlight}/>}
+                    </div>
+                    <div className={classes.textWrapper}>
+                        <Typography className={classNames(classes.text, this.props.large ? classes.lgText : '')} gutterBottom >{title}</Typography>
+                        {this.props.large && <Typography variant='title' >{subtitle}</Typography>}
+                    </div>
+                </Link>
             </Paper>
         )
     }
 }
+
+ NewsItem.defaultProps = {
+    to: '/',
+ }
 
 export default withStyles(styles)(NewsItem);

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
+import URLS from '../../URLS';
 
 // API imports
 import API from '../../api/api';
@@ -24,6 +25,7 @@ const styles: Object = {
         maxWidth: 1000,
         margin: 'auto',
         paddingTop: 30,
+        paddingBottom: 100,
         minHeight: '100vh',
     },
     top: {
@@ -47,6 +49,8 @@ const mergeElements: Function = (num: number, list: Array<Object>, start: number
 class Landing extends Component {
 
     componentDidMount() {
+        window.scrollTo(0,0);
+
         // Fetch news items
         const response = API.getNews().response();
         response.then((data) => {
@@ -88,7 +92,13 @@ class Landing extends Component {
                 <LiveFeed data={news}/>
                 <div className={classes.root}>
                     <div className={classes.top}>
-                        <NewsItem image={header.image} title={header.title} subtitle={header.subtitle} large/>
+                        <NewsItem
+                            to={URLS.detail.concat('/', header.id)}
+                            image={header.image}
+                            title={header.title}
+                            subtitle={header.subtitle}
+                            large
+                            highlight='SISTE'/>
                     </div>
                     {data.length > 0 && 
                         data.map((value, i) => (

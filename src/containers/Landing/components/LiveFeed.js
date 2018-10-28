@@ -8,6 +8,7 @@ import Typograhpy from '@material-ui/core/Typography';
 
 // Project Components
 import Flex from '../../../components/layout/Flex';
+import Pulse from '../../../components/Pulse';
 
 type P = {
     classes: Object,
@@ -33,6 +34,9 @@ const styles: Object = {
     },
     grow: {
         flexGrow: 1,
+    },
+    pulse: {
+        margin: 10,
     }
 }
 
@@ -47,7 +51,7 @@ const FeedItem : React.StatelessFunctionalComponent<FeedProps> = withStyles(styl
     return (
         <div className={props.className}>
             <Flex>
-                <Typograhpy className={classes.mr} variant='title'>{props.title}</Typograhpy>
+                <Typograhpy className={classes.mr} variant='title' gutterBottom>{props.title}</Typograhpy>
                 <Typograhpy className={classes.grow} variant='caption' align='right'>{moment(props.time).fromNow()}</Typograhpy>
             </Flex>
             

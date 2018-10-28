@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 
-const BASE = 'http://localhost:8080/';
+const BASE = 'https://sys-ut-news-app.herokuapp.com/'; //'http://localhost:8080/';
 const TOKEN_HEADER_NAME = 'Authorization';
 const TOKEN_COOKIE_ID = 'access_token';
 const cookies = new Cookies();

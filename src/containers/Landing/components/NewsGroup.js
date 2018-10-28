@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import URLS from '../../../URLS';
 
 // Material UI Components
 
@@ -54,7 +55,12 @@ class NewsGroup extends Component<P> {
         return (
             <div className={classNames(classes.root, right ? '' : classes.left)}>
                 {news.map((value, index) => (
-                    <NewsItem key={index} image={value.image} title={value.title} className={classes[itemN(index)]} />
+                    <NewsItem
+                        to={URLS.detail.concat('/', value.id)}
+                        key={index}
+                        image={value.image}
+                        title={value.title}
+                        className={classes[itemN(index)]} />
                 ))}
             </div>
         )

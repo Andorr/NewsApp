@@ -23,3 +23,10 @@ class Template extends Component<P> {
 }
 
 export default withStyles(styles)(Template);
+
+const Template: React.StatelessFunctionalComponent<P> = (props) => {
+    const {classes} = props;
+    return (
+        null
+    )
+}

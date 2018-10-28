@@ -6,6 +6,7 @@ import URLS from './URLS';
 
 // Project Components
 import Landing from './containers/Landing';
+import Detail from './containers/Detail';
 
 class App extends Component {
   
@@ -16,6 +17,7 @@ class App extends Component {
           <MuiThemeProvider theme={base}>
             <Switch>
               <Route exact path={URLS.landing} component={Landing} />
+              <Route exact path={URLS.detail.concat('/:id')} component={Detail} />
             </Switch>
           </MuiThemeProvider>
         </Router>
