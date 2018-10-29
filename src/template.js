@@ -10,6 +10,10 @@ type P = {
     classes: Object,
 }
 
+type S = {
+    news: ?Array<Object>,
+}
+
 const styles: Object = {}
 
 class Template extends Component<P> {

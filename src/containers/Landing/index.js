@@ -10,6 +10,7 @@ import ws from '../../api/ws';
 
 // Redux and action imports
 import {setNewsItems, setNewsItem} from '../../store/actions/NewsActions';
+import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI Components
 
@@ -48,8 +49,17 @@ const mergeElements: Function = (num: number, list: Array<Object>, start: number
 
 class Landing extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            isLoading: true,
+        }
+    }
+
     componentDidMount() {
         window.scrollTo(0,0);
+
+        
 
         // Fetch news items
         const response = API.getNews().response();
@@ -57,6 +67,7 @@ class Landing extends Component {
             if(response.isError === false) {
                 this.props.dispatch(setNewsItems(data));
             }
+            this.setState({isLoading: false});
         });
 
         ws.onmessage = (event) => {
@@ -88,7 +99,7 @@ class Landing extends Component {
         console.log(data);
 
         return (
-            <Navigation>
+            <Navigation isLoading={this.state.isLoading} noRenderAtLoad whitesmoke>
                 <LiveFeed data={news}/>
                 <div className={classes.root}>
                     <div className={classes.top}>
@@ -116,7 +127,7 @@ Landing.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    news: state.news.news,
+    news: NewsSelectors.getNews(state),
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(Landing));

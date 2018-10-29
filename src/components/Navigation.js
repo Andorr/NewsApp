@@ -21,7 +21,6 @@ const styles = {
     },
     main: {
         marginTop: 64,
-        backgroundColor: 'whitesmoke',
         '@media only screen and (max-width: 600px)': {
             marginTop: 56,
         },
@@ -45,12 +44,17 @@ const styles = {
     menuButton: {
         color: 'white',
     },
+    whitesmoke: {
+        backgroundColor: 'var(--gray)',
+    },
 };
 
 type P = {
     classes: Object,
-    isLoading: bool,
+    isLoading: ?bool,
     children: any,
+    noRenderAtLoad: ?bool,
+    whitesmoke: ?bool,
 }
 
 class Navigation extends Component<P> {
@@ -68,11 +72,13 @@ class Navigation extends Component<P> {
                     </Toolbar>
                 </AppBar>
                
-                <main className={classes.main}>
+                <main className={classNames(classes.main, (this.props.whitesmoke) ? classes.whitesmoke : '')}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
-                    <div className={classes.wrapper}>
-                        {this.props.children}
-                    </div>
+                    {(this.props.noRenderAtLoad && this.props.isLoading) ? null :
+                        <div className={classes.wrapper}>
+                            {this.props.children}
+                        </div>
+                    }
                 </main>
             </Fragment>
           );

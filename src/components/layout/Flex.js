@@ -11,19 +11,29 @@ type P = {
     classes: Object,
     children: any,
     className: string,
+
+    justify: ?string,
+    align: ?string,
+    dir: ?string,
 }
 
 const styles: Object = {
     root: {
         display: 'flex',
-        alignItems: 'center',
     }
 }
 
 const Flex: React.StatelessFunctionalComponent<P> = (props) => {
     const {classes} = props;
+    const flexClass : Object = {
+        ...classes,
+        justifyContent: props.justify || 'flex-start',
+        alignItems: props.align || 'center',
+        flexDirection: props.dir || 'row',
+    };
+
     return (
-        <div className={classNames(classes.root, props.className)}>
+        <div className={classNames(classes.root, props.className)} style={flexClass}>
             {props.children}
         </div>
     )

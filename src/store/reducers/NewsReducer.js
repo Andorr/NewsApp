@@ -31,4 +31,11 @@ const reducer = (state = initialState, action) => {
     }
 }
 
+// --- SELECTORS ---
+const getNewsReducer = (state) => state.news;
+
+export const getNews = (state) => getNewsReducer(state).news;
+
+export const getNewsById = (id) => (state) => getNews(state).find(n => n.id === id);
+
 export default reducer;

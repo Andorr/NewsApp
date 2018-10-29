@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 // Project Components
 import Pulse from '../components/Pulse';
+import Flex from '../components/layout/Flex';
 
 type P = {
     classes: Object,
@@ -39,16 +40,16 @@ const styles: Object = {
         maxHeight: 400,
     },
     imageWrapper: {
-        minHeight: 200,
         backgroundColor: 'whitesmoke',
         position: 'relative',
-
+        minHeight: 100,
         '@media only screen and (max-width: 600px)': {
             minHeight: 100,
         }
     },
     textWrapper: {
         padding: 28,
+        flexGrow: 1,
     },
     text: {
         fontSize: '1.8rem',

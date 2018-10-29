@@ -54,9 +54,7 @@ const FeedItem : React.StatelessFunctionalComponent<FeedProps> = withStyles(styl
                 <Typograhpy className={classes.mr} variant='title' gutterBottom>{props.title}</Typograhpy>
                 <Typograhpy className={classes.grow} variant='caption' align='right'>{moment(props.time).fromNow()}</Typograhpy>
             </Flex>
-            
             <Typograhpy variant='caption'>{props.subtitle}</Typograhpy>
-            
         </div>
     )
 });
