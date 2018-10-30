@@ -13,7 +13,7 @@ export class IRequest {
         this.url = BASE + url;
 
         if (withAuth) {
-            this.headers[TOKEN_HEADER_NAME] = TOKEN.get();
+            this.headers[TOKEN_HEADER_NAME] = 'Bearer ' + TOKEN.get();
         }
 
         for (const key in args) {

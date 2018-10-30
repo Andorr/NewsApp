@@ -10,5 +10,9 @@ export const base = createMuiTheme({
             main: '#2d343a',
             contrastText: 'white',
         },
+        secondary: {
+            main: '#3d996e',
+            contrastText: 'white',
+        }
     }
 });

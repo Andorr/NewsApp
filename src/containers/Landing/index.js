@@ -9,7 +9,8 @@ import API from '../../api/api';
 import ws from '../../api/ws';
 
 // Redux and action imports
-import {setNewsItems, setNewsItem} from '../../store/actions/NewsActions';
+import NewsService from '../../store/services/NewsService';
+import * as NewsActions from '../../store/actions/NewsActions';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI Components
@@ -59,20 +60,14 @@ class Landing extends Component {
     componentDidMount() {
         window.scrollTo(0,0);
 
-        
-
         // Fetch news items
-        const response = API.getNews().response();
-        response.then((data) => {
-            if(response.isError === false) {
-                this.props.dispatch(setNewsItems(data));
-            }
+        NewsService.fetchNews((isError, data) => {
             this.setState({isLoading: false});
         });
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            this.props.dispatch(setNewsItem(data));
+            this.props.dispatch(NewsActions.setNewsItem(data));
         };
     }
 

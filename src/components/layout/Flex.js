@@ -33,7 +33,7 @@ const Flex: React.StatelessFunctionalComponent<P> = (props) => {
     };
 
     return (
-        <div className={classNames(classes.root, props.className)} style={flexClass}>
+        <div {...props} style={flexClass} className={classNames(classes.root, props.className)} >
             {props.children}
         </div>
     )

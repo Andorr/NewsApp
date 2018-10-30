@@ -18,6 +18,7 @@ import Like from '@material-ui/icons/ThumbUp';
 // Project Components
 import Navigation from '../../components/Navigation';
 import Flex from '../../components/layout/Flex';
+import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 type P = {
     classes: Object,
@@ -35,6 +36,7 @@ const styles: Object = {
         maxWidth: 1000,
         margin: 'auto',
         paddingTop: 30,
+        paddingBottom: 100,
     
         '@media only screen and (max-width: 600px)': {
             padding: 0,
@@ -58,6 +60,11 @@ const styles: Object = {
         gridTemplateColumns: '1fr 1fr 1fr',
 
         padding: 28,
+
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '100%',
+            gridTemplateAreas: "'title' 'details' 'text'",
+        }
     },
     titleContent: {
         gridArea: 'title',
@@ -114,6 +121,7 @@ class Detail extends Component<P, S> {
         const {classes} = this.props;
         let {news} = this.state;
         news = news || {};
+        const author = news.author || {};
 
         return (
             <Navigation isLoading={this.state.isLoading}>
@@ -124,13 +132,13 @@ class Detail extends Component<P, S> {
                     <div className={classes.content}>
                         <div className={classes.titleContent}>
                             <Typography variant='display2'>{news.title}</Typography>
-                            <Typography variant='caption'>{news.subtitle}</Typography>
+                            <Typography variant='headline'>{news.subtitle}</Typography>
                         </div>
                         <div className={classes.detailContent}>
                             <Flex className={classes.authorContent} justify='flex-end'>
                                 <Flex dir='column' align='flex-end'>
-                                    <Typography variant='title'>Anders</Typography>
-                                    <Typography variant='caption'>Noe</Typography>
+                                    <Typography variant='title'>{author.nickname || 'Anonym'}</Typography>
+                                    <Typography variant='caption'>{author.email}</Typography>
                                 </Flex>
                                 <Avatar className={classes.ml}>A</Avatar>
                             </Flex>
@@ -140,7 +148,7 @@ class Detail extends Component<P, S> {
                             </Flex>
                         </div>
                         <div className={classes.textContent}>
-                            <Typography variant='body2'>{news.content}</Typography>
+                            <MarkdownRenderer value={news.content} />
                         </div>
                     </div>
                 </div>

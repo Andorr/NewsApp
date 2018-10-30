@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import TextField from '@material-ui/core/TextField';
@@ -19,15 +18,7 @@ type P = {
     onChange: Function,
 }
 
-type S = {
-    news: ?Array<Object>,
-}
-
-const styles: Object = {}
-
-
 const PasswordField: React.StatelessFunctionalComponent<P> = (props) => {
-    const {classes} = props;
     return (
         <TextField
             {...props}
@@ -47,5 +38,5 @@ const PasswordField: React.StatelessFunctionalComponent<P> = (props) => {
     )
 }
 
-export default withStyles(styles)(PasswordField);
+export default (PasswordField);
 

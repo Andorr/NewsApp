@@ -8,7 +8,6 @@ import Typograhpy from '@material-ui/core/Typography';
 
 // Project Components
 import Flex from '../../../components/layout/Flex';
-import Pulse from '../../../components/Pulse';
 
 type P = {
     classes: Object,

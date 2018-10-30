@@ -14,10 +14,6 @@ type P = {
     classes: Object,
 }
 
-type S = {
-    news: ?Array<Object>,
-}
-
 const styles: Object = {
     root: {
         maxWidth: 1000,

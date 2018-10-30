@@ -1,19 +1,28 @@
 // @flow
 
 import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import Link from 'react-router-dom/Link';
 import URLS from '../URLS';
 import classNames from 'classnames';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+
+// Service imports
+import AuthService from '../store/services/AuthService';
+import * as UserSelectors from '../store/reducers/UserReducer';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
+// Project Components
+import Flex from './layout/Flex';
 
-const styles = {
+const styles = (theme) => ({
     root: {
         boxSizing: 'border-box',
         color: 'white',
@@ -30,15 +39,11 @@ const styles = {
     },
     navWrapper: {
         width: '100%',
-        padding: '0 10px',
-        display: 'flex',
-        maxWidth: 1400,
+        maxWidth: 1000,
         margin: 'auto',
 
-        alignItems: 'center',
-
-        '@media only screen and (max-width: 600px)': {
-            flexDirection: 'row-reverse',
+        '@media only screen and (max-width: 800px)': {
+            padding: '4px 8px',
         }
     },
     menuButton: {
@@ -47,7 +52,23 @@ const styles = {
     whitesmoke: {
         backgroundColor: 'var(--gray)',
     },
-};
+    outlineBtn: {
+        border: '2px solid',
+        marginLeft: 10,
+    },
+    white: {
+        color: 'white',
+    },
+    mr: {
+        marginRight: 12,
+    },
+    rightMenu: {
+        cursor: 'pointer',
+    },
+    avatar: {
+        border: '2px solid ' + theme.palette.secondary.main,
+    },
+});
 
 type P = {
     classes: Object,
@@ -55,20 +76,52 @@ type P = {
     children: any,
     noRenderAtLoad: ?bool,
     whitesmoke: ?bool,
+    history: Object,
 }
+
+const RightMenu = withStyles(styles)((props: Object) => (
+    <Flex className={props.classes.white}>
+        <Button onClick={() => props.goTo(URLS.upload)} variant='text' color='inherit'>New article</Button> 
+        {AuthService.isAuthorized() ?
+            <Avatar className={props.classes.avatar}>{props.userInfo.nickname ? props.userInfo.nickname[0] : 'U'}</Avatar>
+            : 
+            <Button className={props.classes.outlineBtn} onClick={() => props.goTo(URLS.login)} variant='outlined' color='inherit'>Log in</Button>
+        }
+    </Flex>
+));
+
+const LeftMenu = withStyles(styles)((props: Object) => (
+    <Flex className={props.classes.rightMenu} onClick={() => props.goTo(URLS.landing)}>
+        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2000px-Vue.js_Logo_2.svg.png' height={38} alt='logo' />
+        <Typography variant='headline' color='inherit'>어떻게</Typography>
+    </Flex>
+));
 
 class Navigation extends Component<P> {
     
+
+    goTo = (page: string) => {
+        this.props.history.push(page);
+    }
+
+    componentDidMount() {
+        AuthService.fetchUserInfo((err, data) => {
+
+        });
+    }
+
     render() {
         const {classes} = this.props;
-
+        
+        console.log(this.props.userInfo);
         return (
             <Fragment>
                 <AppBar className={classes.root} position='fixed' color='primary'>
                     <Toolbar className={classes.navContent} disableGutters>
-                        <div className={classes.navWrapper}>
-
-                        </div>
+                        <Flex className={classes.navWrapper} justify='space-between'>
+                            <LeftMenu goTo={(page) => this.goTo(page)}/>
+                            <RightMenu userInfo={this.props.userInfo} goTo={(page) => this.goTo(page)} />
+                        </Flex>
                     </Toolbar>
                 </AppBar>
                
@@ -85,4 +138,8 @@ class Navigation extends Component<P> {
     }
 }
 
-export default withStyles(styles)(Navigation);
+const mapStateToProps = (state) => ({
+    userInfo: UserSelectors.getUserInfo(state),
+})
+
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(Navigation)));

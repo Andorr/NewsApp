@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 
 // Project Components
 import Pulse from '../components/Pulse';
-import Flex from '../components/layout/Flex';
 
 type P = {
     classes: Object,
