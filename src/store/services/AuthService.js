@@ -45,6 +45,10 @@ class AuthService {
     isAuthorized() {
         return TOKEN.get() !== undefined;
     }
+
+    logout() {
+        TOKEN.remove();
+    }
 }
 
 export default new AuthService();

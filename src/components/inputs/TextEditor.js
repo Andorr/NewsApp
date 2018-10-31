@@ -80,20 +80,28 @@ type P = {
     className: string,
     value: string,
     onChange: Function,
+
+    disableToolbox: ?bool,
+    disablePreview: ?bool,
 }
 
 type S = {
     tabValue: number,
     cursorPos: number,
+
+    text: string,
 }
 
 class TextEditor extends Component<P, S> {
+
+    input: Input;
 
     constructor() {
         super();
         this.state = {
             tabValue: 0,
             cursorPos: 0,
+            text: '',
         }
 
         this.input = React.createRef();
@@ -151,7 +159,7 @@ class TextEditor extends Component<P, S> {
     render() {
         const {classes, disableToolbox, disablePreview} = this.props;
         const {tabValue} = this.state;
-        const value = this.props.value || '';
+        const value: string = this.props.value || '';
         return (
             <div className={classNames(classes.root, this.props.className)}>
                 {!disablePreview && <Tabs value={this.state.tabValue} onChange={this.handleTabChange}>

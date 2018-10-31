@@ -100,6 +100,10 @@ class Upload extends Component<P, S> {
     createNews = (event: Object) => {
         event.preventDefault();
 
+        if(this.state.isLoading) {
+            return;
+        }
+
         const {title, subtitle, content, category, importance} = this.state;
         // Validate image input
         const image: String = this.state.image;
@@ -117,7 +121,7 @@ class Upload extends Component<P, S> {
         this.setState({isLoading: true});
         NewsService.createNewsItem(newsItem, (err, data) => {
             if(!err) {
-                this.props.history.push(URLS.news.concat(data._id));
+                this.props.history.push(URLS.detail.concat(data._id));
                 this.resetValues();
             }
 

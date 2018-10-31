@@ -67,6 +67,7 @@ const styles = (theme) => ({
     },
     avatar: {
         border: '2px solid ' + theme.palette.secondary.main,
+        cursor: 'pointer',
     },
 });
 
@@ -83,7 +84,7 @@ const RightMenu = withStyles(styles)((props: Object) => (
     <Flex className={props.classes.white}>
         <Button onClick={() => props.goTo(URLS.upload)} variant='text' color='inherit'>New article</Button> 
         {AuthService.isAuthorized() ?
-            <Avatar className={props.classes.avatar}>{props.userInfo.nickname ? props.userInfo.nickname[0] : 'U'}</Avatar>
+            <Avatar className={props.classes.avatar} onClick={() => props.goTo(URLS.profile)}>{props.userInfo.nickname ? props.userInfo.nickname[0] : 'U'}</Avatar>
             : 
             <Button className={props.classes.outlineBtn} onClick={() => props.goTo(URLS.login)} variant='outlined' color='inherit'>Log in</Button>
         }
@@ -113,7 +114,6 @@ class Navigation extends Component<P> {
     render() {
         const {classes} = this.props;
         
-        console.log(this.props.userInfo);
         return (
             <Fragment>
                 <AppBar className={classes.root} position='fixed' color='primary'>

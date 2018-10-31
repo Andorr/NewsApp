@@ -3,4 +3,5 @@ export default {
     detail: '/news',
     login: '/login',
     upload: '/upload',
+    profile: '/account',
 };

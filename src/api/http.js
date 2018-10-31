@@ -67,8 +67,8 @@ const getRequest = (method, url, headers) => {
 };
 
 export class Token {
-    set(token) {
-        cookies.set(TOKEN_COOKIE_ID, token, {path: '/'});
+    set(token, expires_in=3600) {
+        cookies.set(TOKEN_COOKIE_ID, token, {path: '/', expires: new Date(Date.now() + expires_in*1000)});
     }
 
     get() {
@@ -79,4 +79,5 @@ export class Token {
         cookies.remove(TOKEN_COOKIE_ID, {path: '/'});
     }
 }
+
 export const TOKEN = new Token();

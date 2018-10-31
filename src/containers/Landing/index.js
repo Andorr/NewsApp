@@ -90,7 +90,8 @@ class Landing extends Component {
     render() {
         const {classes, news} = this.props;
         const header = news && news.length > 0 ? news[0] : {};
-        const data = mergeElements(6, news, 2);
+        const data = mergeElements(6, news, 1);
+        console.log("HEAD: ", header);
         console.log(data);
 
         return (

@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 // Store and API imports
 import API from '../../api/api';
@@ -19,6 +20,7 @@ import Like from '@material-ui/icons/ThumbUp';
 import Navigation from '../../components/Navigation';
 import Flex from '../../components/layout/Flex';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
+import CommentSection from './components/CommentSection';
 
 type P = {
     classes: Object,
@@ -78,11 +80,15 @@ const styles: Object = {
     },
     authorContent: {
         width: '100%',
+        marginBottom: 10,
     },
     voteContent: {
         padding: '16px 0',
     },
     ml: {marginLeft: 10},
+    commentSection: {
+        padding: 28,
+    }
 }
 
 class Detail extends Component<P, S> {
@@ -122,6 +128,7 @@ class Detail extends Component<P, S> {
         let {news} = this.state;
         news = news || {};
         const author = news.author || {};
+        const published = news.created_at ? moment(news.created_at, ['YYYY-MM-DD HH:mm'], 'nb') : '';
 
         return (
             <Navigation isLoading={this.state.isLoading}>
@@ -142,15 +149,23 @@ class Detail extends Component<P, S> {
                                 </Flex>
                                 <Avatar className={classes.ml}>A</Avatar>
                             </Flex>
+                            <Flex justify='flex-end'>
+                                <Typography variant='caption'>Publisert: {published ? published.format('HH:mm DD.MM.YYYY') : ''}</Typography>
+                            </Flex>
                             <Flex className={classes.voteContent} justify='flex-end'>
+                            
                                 <Typography variant='body2'>{news.vote_count} likes</Typography>
                                 <IconButton><Like/></IconButton>
                             </Flex>
+                            
                         </div>
                         <div className={classes.textContent}>
                             <MarkdownRenderer value={news.content} />
                         </div>
+
+                        
                     </div>
+                    <CommentSection className={classes.commentSection} />
                 </div>
             </Navigation>
         )
