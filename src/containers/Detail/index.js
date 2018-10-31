@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 
 // Store and API imports
-import API from '../../api/api';
+import NewsService from '../../store/services/NewsService';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI Components
@@ -103,24 +103,35 @@ class Detail extends Component<P, S> {
     }
 
     componentDidMount() {
-        const id = this.props.match.params.id;
-        const item = this.props.getNewsItem(id);
+        window.scrollTo(0,0);
+
+        const id: number = this.props.match.params.id;
+        const item: Object = this.props.getNewsItem(id);
         console.log(item);
 
+        // If news item is already fetched, get it
         if(item) {
             this.setState({news: item});
         } else {
+            // If not, fetch from server
             this.setState({isLoading: true});
-            const response = API.getNewsById(id).response();
-            response.then((data) => {
+            NewsService.fetchNewsItem(id, (isError: bool, data: Object) => {
                 console.log(data);
-                if(response.isError === false) {
+                if(isError === false) {
                     this.setState({news: data});
                 }
                 this.setState({isLoading: false});
             });
         }
-        
+    }
+
+    onCommentPost = (comment) => {
+        const id: number = this.props.match.params.id;
+        NewsService.createComment(id, comment, (isError: bool, news: Object) => {
+            if(isError === false) {
+                this.setState({news: news});
+            }
+        });
     }
 
     render() {
@@ -162,10 +173,11 @@ class Detail extends Component<P, S> {
                         <div className={classes.textContent}>
                             <MarkdownRenderer value={news.content} />
                         </div>
-
-                        
                     </div>
-                    <CommentSection className={classes.commentSection} />
+                    <CommentSection
+                    comments={news.comments}
+                    className={classes.commentSection}
+                    onCommentPost={this.onCommentPost}/>
                 </div>
             </Navigation>
         )

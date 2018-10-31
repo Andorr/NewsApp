@@ -14,6 +14,9 @@ export default {
     createNews: (data: Object) => {
         return new IRequest('POST', 'news/', data);
     },
+    createNewsComment: (data) => {
+        return new IRequest('POST', 'news/comment/', data);
+    },
 };
 
 export const AUTH = {

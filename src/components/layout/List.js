@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 // Material UI Components
 
@@ -8,20 +9,20 @@ import {withStyles} from '@material-ui/core/styles';
 import Flex from './Flex';
 
 const styles: Object = {
-    padding: {
+    item: {
         padding: 12,
+        width: '100%',
     }
 }
 
 type P = {
-    classes: Object,
     children: ?any,
-    className: ?string,
+    className? :string,
 }
 
 const List: React.StatelessFunctionalComponent<P> = (props: Object) => {
     return (
-        <Flex className={props.className}>
+        <Flex className={props.className} dir='column'>
             {props.children}
         </Flex>
     )
@@ -30,14 +31,15 @@ const List: React.StatelessFunctionalComponent<P> = (props: Object) => {
 export default (List);
 
 type ListItemProps = {
-    classes: Object,
+    classes?: Object,
     children: ?any,
+    className?: string,
 }
 
 export const ListItem: React.StatelessFunctionalComponent<ListItemProps> = withStyles(styles)((props: Object) => {
     const {classes} = props;
     return (
-        <div className={classes.padding}>
+        <div className={classNames(classes.item, props.className)}>
             {props.children}
         </div>
     )
