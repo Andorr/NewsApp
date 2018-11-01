@@ -73,7 +73,7 @@ class LogInForm extends Component<P, S> {
                 email: null,
                 password: null,
             },
-            errorMessage: null,
+            errorMessage: '',
         };
     }
 
@@ -137,6 +137,7 @@ class LogInForm extends Component<P, S> {
                         <PasswordField
                             className={classes.input}
                             label='Password'
+                            variant='outlined'
                             error={this.state.errors.password !== null}
                             helperText={this.state.errors.password || ''}
                             value={this.state.password}

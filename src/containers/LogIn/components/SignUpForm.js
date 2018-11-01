@@ -69,7 +69,7 @@ class SignUpForm extends Component<P, S> {
             confirmedPassword: '',
 
             errors: {email: null, nickname: null, password: null, confirmedPassword: null},
-            errorMessage: null,
+            errorMessage: '',
         };
     }
 
@@ -113,7 +113,7 @@ class SignUpForm extends Component<P, S> {
         this.setState({isLoading: true});
         AuthService.createAccount(email, password, nickname, (isError, data) => {
             if(!isError) {
-                this.setState({userCreated: true, errorMessage: null, });
+                this.setState({userCreated: true, errorMessage: ''});
                 this.resetValues();
             } else {
                 this.setState({errorMessage: data ? data.message : 'An error occurred'});

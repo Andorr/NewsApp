@@ -43,6 +43,14 @@ class NewsService {
             !callback || callback(response.isError, data);
         });
     }
+
+    // Like a post
+    onLikePost = (id: string, isUpvote: bool, callback: Function) => {
+        const response = API.voteNews(id, isUpvote).response();
+        response.then((data) => {
+            !callback || callback(response.isError, data);
+        });
+    }
 }
 
 export default new NewsService();

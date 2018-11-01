@@ -78,6 +78,7 @@ type P = {
     noRenderAtLoad: ?bool,
     whitesmoke: ?bool,
     history: Object,
+    userInfo?: Object,
 }
 
 const RightMenu = withStyles(styles)((props: Object) => (

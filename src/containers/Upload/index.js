@@ -19,6 +19,7 @@ import Select from '../../components/inputs/Select';
 
 type P = {
     classes: Object,
+    history?: Object,
 }
 
 type S = {
@@ -106,7 +107,7 @@ class Upload extends Component<P, S> {
 
         const {title, subtitle, content, category, importance} = this.state;
         // Validate image input
-        const image: String = this.state.image;
+        const image: string = this.state.image;
 
         // Create news
         const newsItem: Object = {
@@ -120,7 +121,7 @@ class Upload extends Component<P, S> {
 
         this.setState({isLoading: true});
         NewsService.createNewsItem(newsItem, (err, data) => {
-            if(!err) {
+            if(!err && this.props.history) {
                 this.props.history.push(URLS.detail.concat(data._id));
                 this.resetValues();
             }

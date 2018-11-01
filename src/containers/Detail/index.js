@@ -88,7 +88,7 @@ const styles: Object = {
     ml: {marginLeft: 10},
     commentSection: {
         padding: 28,
-    }
+    },
 }
 
 class Detail extends Component<P, S> {
@@ -97,6 +97,7 @@ class Detail extends Component<P, S> {
         super();
         this.state = {
             isLoading: false,
+            isVoting: false,
 
             news: {},
         };
@@ -105,7 +106,7 @@ class Detail extends Component<P, S> {
     componentDidMount() {
         window.scrollTo(0,0);
 
-        const id: number = this.props.match.params.id;
+        const id: string = this.props.match.params.id;
         const item: Object = this.props.getNewsItem(id);
         console.log(item);
 
@@ -126,11 +127,30 @@ class Detail extends Component<P, S> {
     }
 
     onCommentPost = (comment) => {
-        const id: number = this.props.match.params.id;
+        const id: string = this.props.match.params.id;
         NewsService.createComment(id, comment, (isError: bool, news: Object) => {
             if(isError === false) {
                 this.setState({news: news});
             }
+        });
+    }
+
+    onLikePost = () => {
+        if(this.state.isVoting) {
+            return;
+        }
+
+        const id: string = this.props.match.params.id;
+        const {news} = this.state;
+        const isUpvote: bool = news.isVoted === false;
+
+        this.setState({isVoting: true});
+        NewsService.onLikePost(id, isUpvote, (isError, data) => {
+            if(isError === false) {
+                data.isVoted = isUpvote;
+                this.setState({news: data});
+            }
+            this.setState({isVoting: false});
         });
     }
 
@@ -166,7 +186,12 @@ class Detail extends Component<P, S> {
                             <Flex className={classes.voteContent} justify='flex-end'>
                             
                                 <Typography variant='body2'>{news.vote_count} likes</Typography>
-                                <IconButton><Like/></IconButton>
+                                <IconButton
+                                    onClick={this.onLikePost}
+                                    color={news.isVoted ? 'secondary' : 'default'}
+                                    disabled={this.state.isVoting}>
+                                    <Like/>
+                                </IconButton>
                             </Flex>
                             
                         </div>

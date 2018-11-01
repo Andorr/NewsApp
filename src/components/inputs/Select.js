@@ -8,22 +8,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 // Project Components
 
 type P = {
-    classes: Object,
-    label: string,
+    classes?: Object,
     variant: ?string,
-    value: string,
+    value?: any,
     onChange: Function,
-    icon: ?any,
+    icon?: any,
     data: Array<Object>,
+    required?: any,
 }
 
-const PasswordField: React.StatelessFunctionalComponent<P> = (props) => {
+const Select: React.StatelessFunctionalComponent<P> = (props) => {
     const data: Array<Object> = props.data || [];
     return (
         <TextField
             {...props}
             select
-            label={props.label}
             variant={props.variant || 'outlined'}
             value={props.value}
             onChange={props.onChange}
@@ -37,4 +36,4 @@ const PasswordField: React.StatelessFunctionalComponent<P> = (props) => {
     )
 }
 
-export default (PasswordField);
+export default (Select);

@@ -11,14 +11,14 @@ import Security from '@material-ui/icons/Security';
 // Project Components
 
 type P = {
-    classes: Object,
+    classes?: Object,
     label: ?string,
     variant: ?string,
     value: string,
     onChange: Function,
 }
 
-const PasswordField: React.StatelessFunctionalComponent<P> = (props) => {
+const PasswordField: React.StatelessFunctionalComponent<P> = (props: Object) => {
     return (
         <TextField
             {...props}

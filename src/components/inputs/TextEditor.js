@@ -61,7 +61,7 @@ const styles: Object = {
 
 type ToolbarProps = {
     onClick: Function,
-    classes: Object,
+    classes?: Object,
     children: any,
 };
 
@@ -77,6 +77,7 @@ const ToolbarAction: React.StatelessFunctionalComponent<ToolbarProps> = withStyl
 type P = {
     classes: Object,
     editorClass: string,
+    toolboxClass?: string,
     className: string,
     value: string,
     onChange: Function,

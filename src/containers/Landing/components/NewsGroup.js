@@ -48,6 +48,10 @@ const itemN: Function = (order: number) => ('item'.concat(order.toString()));
 
 class NewsGroup extends Component<P> {
 
+    static defaultProps = {
+        right: true,
+    }
+
     render() {
         const {classes, data, right} = this.props;
         const news = (data ? data.slice(0, 5) : null) || [];
@@ -65,10 +69,6 @@ class NewsGroup extends Component<P> {
             </div>
         )
     }
-}
-
-NewsGroup.defaultProps = {
-    right: true,
 }
 
 export default withStyles(styles)(NewsGroup);

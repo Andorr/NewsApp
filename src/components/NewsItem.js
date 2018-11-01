@@ -85,8 +85,4 @@ class NewsItem extends Component<P> {
     }
 }
 
- NewsItem.defaultProps = {
-    to: '/',
- }
-
 export default withStyles(styles)(NewsItem);

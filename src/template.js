@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import * as React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
@@ -12,7 +12,7 @@ type P = {
 
 const styles: Object = {}
 
-class Template extends Component<P> {
+class Template extends React.Component<P> {
 
     render() {
         const {classes} = this.props;
@@ -24,7 +24,7 @@ class Template extends Component<P> {
 
 export default withStyles(styles)(Template);
 
-const Template: React.StatelessFunctionalComponent<P> = (props) => {
+const Template2: React.StatelessFunctionalComponent<P> = (props) => {
     const {classes} = props;
     return (
         null

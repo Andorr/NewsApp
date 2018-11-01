@@ -36,10 +36,10 @@ const styles: Object = {
 }
 
 type CommentProps = {
-    classes: Object,
-    comment: ?string,
-    author: ?string,
-    timePosted: ?string,
+    classes?: Object,
+    comment?: string,
+    author?: string,
+    timePosted?: string,
 }
 
 const CommentItem : React.StatelessFunctionalComponent<CommentProps> = withStyles(styles)((props) => {
