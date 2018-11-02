@@ -3,6 +3,7 @@
 import {AUTH} from '../../api/api';
 import {TOKEN} from '../../api/http';
 import store from '../store';
+import ws from '../../api/ws';
 
 import * as UserActions from '../actions/UserActions';
 
@@ -37,6 +38,7 @@ class AuthService {
         response.then((data) => {
             if(response.isError === false) {
                 store.dispatch(UserActions.setUserInfo(data));
+                ws.sendAuth(data._id);
             }
             !callback || callback(response.isError === true, data);
         });

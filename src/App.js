@@ -49,7 +49,7 @@ class App extends Component {
 
     // Send userId to websocket-server
     if(AuthService.isAuthorized()) {
-      ws.sendAuth(store.getData().user.id);
+      ws.sendAuth(store.getState().user.id);
     }
   }
 
