@@ -11,6 +11,7 @@ export const setUserInfo = (data) => (
 
 // --- Helpers ---
 const createUserItem = (data) => ({
+    id: data._id,
     email: data.email,
     nickname: data.nickname,
 });

@@ -3,6 +3,11 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {base} from './theme';
 import URLS from './URLS';
+import store from './store/store';
+
+// Action and Websocket import
+import ws from './api/ws';
+import * as NewsActions from './store/actions/NewsActions';
 
 // Project Components
 import Landing from './containers/Landing';
@@ -31,6 +36,26 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 };
 
 class App extends Component {
+
+  componentDidMount() {
+    // On news recieved from websocket...
+    ws.onmessage = (event: Object) => {
+      const data: Object = JSON.parse(event.data);
+      console.log(data);
+
+      // ...store it
+      store.dispatch(NewsActions.setNewsItem(data));
+    };
+
+    // Send userId to websocket-server
+    if(AuthService.isAuthorized()) {
+      ws.sendAuth(store.getData().user.id);
+    }
+  }
+
+  componentWillUnmount() {
+    ws.close();
+  }
   
   render() {
     return (

@@ -28,6 +28,5 @@ const createNewsItem = (data) => ({
     id: data._id,
     voteCount: data.vote_count,
     commentCount: (data.comments)? data.comments.length : 0,
-    isLiked: (data.isVoted)? data.isVoted : false,
     ...data,
 });

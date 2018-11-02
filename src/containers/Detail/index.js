@@ -22,17 +22,6 @@ import Flex from '../../components/layout/Flex';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 import CommentSection from './components/CommentSection';
 
-type P = {
-    classes: Object,
-    match: Object,
-    getNewsItem: Function,
-}
-
-type S = {
-    news: Object,
-    isLoading: bool,
-}
-
 const styles: Object = {
     root: {
         maxWidth: 1000,
@@ -89,6 +78,18 @@ const styles: Object = {
     commentSection: {
         padding: 28,
     },
+};
+
+type P = {
+    classes: Object,
+    match: Object,
+    getNewsItem: Function,
+}
+
+type S = {
+    id: string,
+    isLoading: bool,
+    isVoting: bool,
 }
 
 class Detail extends Component<P, S> {
@@ -99,7 +100,7 @@ class Detail extends Component<P, S> {
             isLoading: false,
             isVoting: false,
 
-            news: {},
+            id: '',
         };
     }
 
@@ -110,28 +111,25 @@ class Detail extends Component<P, S> {
         const item: Object = this.props.getNewsItem(id);
         console.log(item);
 
-        // If news item is already fetched, get it
-        if(item) {
-            this.setState({news: item});
-        } else {
-            // If not, fetch from server
+        // If the article is not fetch, fetch from server
+        if(!item) {
             this.setState({isLoading: true});
             NewsService.fetchNewsItem(id, (isError: bool, data: Object) => {
                 console.log(data);
                 if(isError === false) {
-                    this.setState({news: data});
+                    this.setState({id: data._id});
                 }
                 this.setState({isLoading: false});
             });
+        } else {
+            this.setState({id: id});
         }
     }
 
     onCommentPost = (comment) => {
         const id: string = this.props.match.params.id;
         NewsService.createComment(id, comment, (isError: bool, news: Object) => {
-            if(isError === false) {
-                this.setState({news: news});
-            }
+
         });
     }
 
@@ -141,23 +139,17 @@ class Detail extends Component<P, S> {
         }
 
         const id: string = this.props.match.params.id;
-        const {news} = this.state;
-        const isUpvote: bool = news.isVoted === false;
+        /* const news = this.props.getNewsItem(this.state.id) || {}; */
 
         this.setState({isVoting: true});
-        NewsService.onLikePost(id, isUpvote, (isError, data) => {
-            if(isError === false) {
-                data.isVoted = isUpvote;
-                this.setState({news: data});
-            }
+        NewsService.onLikePost(id, (isError, data) => {
             this.setState({isVoting: false});
         });
     }
 
     render() {
         const {classes} = this.props;
-        let {news} = this.state;
-        news = news || {};
+        const news = this.props.getNewsItem(this.state.id) || {};
         const author = news.author || {};
         const published = news.created_at ? moment(news.created_at, ['YYYY-MM-DD HH:mm'], 'nb') : '';
 
@@ -200,9 +192,9 @@ class Detail extends Component<P, S> {
                         </div>
                     </div>
                     <CommentSection
-                    comments={news.comments}
-                    className={classes.commentSection}
-                    onCommentPost={this.onCommentPost}/>
+                        comments={news.comments}
+                        className={classes.commentSection}
+                        onCommentPost={this.onCommentPost}/>
                 </div>
             </Navigation>
         )

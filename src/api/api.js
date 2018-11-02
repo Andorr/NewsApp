@@ -8,8 +8,8 @@ export default {
     getNewsById: (id: string) => {
         return new IRequest('GET', 'news/'.concat(id), false);
     },
-    voteNews: (id: string, vote: bool) => {
-        return new IRequest('POST', 'news/vote/', {news: id, upvote: vote});
+    voteNews: (id: string) => {
+        return new IRequest('POST', 'news/vote/', {news: id});
     },
     createNews: (data: Object) => {
         return new IRequest('POST', 'news/', data);

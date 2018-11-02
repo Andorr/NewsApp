@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
     switch(action.type) {
 
         case actions.SET_USER_INFO: {
-            return {...state, email: action.payload.email, nickname: action.payload.nickname};
+            return {...state, email: action.payload.email, nickname: action.payload.nickname, id: action.payload.id};
         }
 
         default: {

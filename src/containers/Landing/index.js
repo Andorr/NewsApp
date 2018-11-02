@@ -4,17 +4,9 @@ import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import URLS from '../../URLS';
 
-// API imports
-import API from '../../api/api';
-import ws from '../../api/ws';
-
 // Redux and action imports
 import NewsService from '../../store/services/NewsService';
-import * as NewsActions from '../../store/actions/NewsActions';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
-
-// Material UI Components
-
 
 // Project Components
 import Navigation from '../../components/Navigation';
@@ -64,35 +56,12 @@ class Landing extends Component {
         NewsService.fetchNews((isError, data) => {
             this.setState({isLoading: false});
         });
-
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.props.dispatch(NewsActions.setNewsItem(data));
-        };
     }
 
-    componentWillUnmount() {
-        ws.onmessage = null;
-    }
-
-    onNewsLike = (value) => () => {
-        // Vote
-        console.log(value);
-        const response = API.voteNews(value.id, true).response();
-        response.then((data) => {
-            console.log(data);
-            if(response.isError === false) {
-
-            }
-        });
-    }
-      
     render() {
         const {classes, news} = this.props;
         const header = news && news.length > 0 ? news[0] : {};
         const data = mergeElements(6, news, 1);
-        console.log("HEAD: ", header);
-        console.log(data);
 
         return (
             <Navigation isLoading={this.state.isLoading} noRenderAtLoad whitesmoke>

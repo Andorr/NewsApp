@@ -12,7 +12,7 @@ class NewsService {
         const response = API.getNews().response();
         response.then((data: Object) => {
             if(response.isError === false) {
-                store.dispatch(NewsActions.setNewsItems(data));
+                store.dispatch(NewsActions.setNewsItems(data)); // Add to store
             }
             !callback || callback(response.isError, data);
         });
@@ -22,6 +22,9 @@ class NewsService {
     fetchNewsItem = (id: string, callback: Function) => {
         const response = API.getNewsById(id).response();
         response.then((data: Object) => {
+            if(response.isError === false) {
+                store.dispatch(NewsActions.setNewsItem(data)); // Add to store
+            }
             !callback || callback(response.isError, data);
         });
     }
@@ -45,8 +48,8 @@ class NewsService {
     }
 
     // Like a post
-    onLikePost = (id: string, isUpvote: bool, callback: Function) => {
-        const response = API.voteNews(id, isUpvote).response();
+    onLikePost = (id: string, callback: Function) => {
+        const response = API.voteNews(id).response();
         response.then((data) => {
             !callback || callback(response.isError, data);
         });
