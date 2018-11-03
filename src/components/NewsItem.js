@@ -55,6 +55,10 @@ const styles: Object = {
     },
     lgText: {
         fontSize: '3rem',
+
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '2.1rem',
+        }
     },
     pulse: {
         position: 'absolute',

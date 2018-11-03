@@ -6,6 +6,7 @@ import moment from 'moment';
 
 // Store and API imports
 import NewsService from '../../store/services/NewsService';
+import AuthService from '../../store/services/AuthService';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI Components
@@ -60,6 +61,17 @@ const styles: Object = {
     titleContent: {
         gridArea: 'title',
         paddingBottom: 28,
+        overflow: 'hidden',
+    },
+    title: {
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '2em'
+        }
+    },
+    subtitle: {
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '1.2em'
+        }
     },
     textContent: {
         gridArea: 'text',
@@ -109,7 +121,6 @@ class Detail extends Component<P, S> {
 
         const id: string = this.props.match.params.id;
         const item: Object = this.props.getNewsItem(id);
-        console.log(item);
 
         // If the article is not fetch, fetch from server
         if(!item) {
@@ -139,7 +150,6 @@ class Detail extends Component<P, S> {
         }
 
         const id: string = this.props.match.params.id;
-        /* const news = this.props.getNewsItem(this.state.id) || {}; */
 
         this.setState({isVoting: true});
         NewsService.onLikePost(id, (isError, data) => {
@@ -161,8 +171,8 @@ class Detail extends Component<P, S> {
                     </div>
                     <div className={classes.content}>
                         <div className={classes.titleContent}>
-                            <Typography variant='display2'>{news.title}</Typography>
-                            <Typography variant='headline'>{news.subtitle}</Typography>
+                            <Typography className={classes.title} variant='display2'>{news.title}</Typography>
+                            <Typography className={classes.subtitle} variant='headline'>{news.subtitle}</Typography>
                         </div>
                         <div className={classes.detailContent}>
                             <Flex className={classes.authorContent} justify='flex-end'>
@@ -177,13 +187,13 @@ class Detail extends Component<P, S> {
                             </Flex>
                             <Flex className={classes.voteContent} justify='flex-end'>
                             
-                                <Typography variant='body2'>{news.vote_count} likes</Typography>
-                                <IconButton
+                                <Typography variant='body2'>{news.vote_count} people like this article</Typography>
+                                {AuthService.isAuthorized() && <IconButton
                                     onClick={this.onLikePost}
                                     color={news.isVoted ? 'secondary' : 'default'}
                                     disabled={this.state.isVoting}>
                                     <Like/>
-                                </IconButton>
+                                </IconButton>}
                             </Flex>
                             
                         </div>
@@ -193,6 +203,7 @@ class Detail extends Component<P, S> {
                     </div>
                     <CommentSection
                         comments={news.comments}
+                        isAuthorized={AuthService.isAuthorized()}
                         className={classes.commentSection}
                         onCommentPost={this.onCommentPost}/>
                 </div>

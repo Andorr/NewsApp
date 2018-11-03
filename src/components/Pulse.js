@@ -15,7 +15,7 @@ type P = {
 
 const styles: Object = {
     root: {
-        backgroundColor: 'rgb(151, 41, 41, 1)',
+        backgroundColor: 'rgb(151, 41, 41)',
     },
     square: {
         borderRadius: 0,

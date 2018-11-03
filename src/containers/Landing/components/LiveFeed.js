@@ -18,18 +18,26 @@ const styles: Object = {
     root: {
         height: 'auto',
         backgroundColor: 'white',
+        overflow: 'hidden',
     },
     wrapper: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+
         padding: 16,
         maxWidth: 1000,
         margin: 'auto',
+
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '1fr',
+            gridTemplateRows: '1fr',
+        },
     },
     mr: {marginRight: 10},
     item: {
-        marginRight: 20,
+        
         borderRight: '1px solid rgba(0,0,0,0.1)',
-        padding: '2px 12px 2px 2px',
-        flexGrow: 1,
+        padding: '1px 12px 2px 8px',
     },
     grow: {
         flexGrow: 1,
@@ -64,7 +72,7 @@ class LiveFeed extends React.Component<P> {
         const {classes, data} = this.props;
         return (
             <div className={classes.root}>
-                <Flex className={classes.wrapper}>
+                <div className={classes.wrapper}>
                     {data && data.slice(0, 2).map((value, i) => (
                         <FeedItem
                             key={i}
@@ -73,7 +81,7 @@ class LiveFeed extends React.Component<P> {
                             subtitle={value.subtitle}
                             time={value.created_at}/>
                     ))}
-                </Flex>
+                </div>
             </div>
         )
     }

@@ -10,8 +10,6 @@ ws.onmessage = (event: MessageEvent) => {
 
 ws.sendAuth = (id: string) => {
 
-    console.log("Sending auth: ", id);
-
     // If not open, send message onOpen
     if(ws.readyState !== ws.OPEN) {
         ws.open = (event) => {

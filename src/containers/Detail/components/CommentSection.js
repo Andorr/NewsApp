@@ -67,6 +67,7 @@ type P = {
     className?: string,
     onCommentPost?: Function,
     comments?: Array<Object>,
+    isAuthorized?: bool,
 };
 
 type S = {
@@ -117,7 +118,7 @@ class CommentSection extends Component<P,S> {
                 
                 <Divider />
                 
-                
+                {this.props.isAuthorized ?
                 <form onSubmit={this.postComment}>
                     <Flex className={classes.inputWrapper} dir='column' align='flex-start'>
                         <TextField
@@ -137,6 +138,9 @@ class CommentSection extends Component<P,S> {
                         </Button>
                     </Flex>
                 </form>
+                :
+                <Typography variant='body2'>You need to login to create a comment</Typography>
+                }
                 <List>
                     {comments.map((value, index) => (
                         <CommentItem

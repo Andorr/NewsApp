@@ -50,6 +50,7 @@ class AuthService {
 
     logout() {
         TOKEN.remove();
+        store.dispatch(UserActions.setUserInfo({}));
     }
 }
 

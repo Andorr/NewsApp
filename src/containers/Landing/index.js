@@ -21,6 +21,12 @@ const styles: Object = {
         paddingTop: 30,
         paddingBottom: 100,
         minHeight: '100vh',
+        
+        '@media only screen and (max-width: 100px)': {
+            maxWidth: '100vw',
+            overflowX: 'hidden',
+        },
+        
     },
     top: {
         marginBottom: 12,
