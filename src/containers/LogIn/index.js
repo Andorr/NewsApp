@@ -19,6 +19,7 @@ const styles: Object = {
         maxWidth: 1000,
         margin: 'auto',
         paddingTop: '10%',
+        overflow: 'hidden',
         
     },
     content: {
@@ -28,17 +29,19 @@ const styles: Object = {
         gridGap: '30px',
 
         '@media only screen and (max-width: 800px)': {
-            gridTemplateColumns: '1fr',
+            gridTemplateColumns: '100%',
             padding: 4,
         }
     },
     paper: {
-        
-
     }
 }
 
 class LogIn extends Component<P> {
+
+    componentDidMount() {
+        window.scrollTo(0,0);
+    }
 
     render() {
         const {classes} = this.props;

@@ -175,7 +175,7 @@ class Navigation extends Component<P, S> {
                         classes={{
                             paper: classes.zIndex,
                         }}>
-                        <Sidebar goTo={this.goTo}/>
+                        <Sidebar goTo={this.goTo} isAuthorized={AuthService.isAuthorized()}/>
                     </Drawer>
                 </Hidden>
                

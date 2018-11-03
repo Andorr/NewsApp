@@ -3,12 +3,15 @@ import * as React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../URLS';
 
+
+
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 
 // Icons
 import Create from '@material-ui/icons/Create';
+import Person from '@material-ui/icons/Person';
 
 // Project Components
 import List from './layout/List';
@@ -51,6 +54,7 @@ const URLButton: React.StatelessFunctionalComponent<URLButtonProps> = withStyles
 type P = {
     classes: Object,
     goTo: Function,
+    isAuthorized: bool,
 }
 
 
@@ -59,6 +63,7 @@ const Sidebar: React.StatelessFunctionalComponent<P> = (props: Object) => {
     return (
         <List className={classes.root}>
             <URLButton url={URLS.upload} label='Ny nyhet' goTo={props.goTo} icon={<Create />}/>
+            {!props.isAuthorized && <URLButton url={URLS.login} label='Login' goTo={props.goTo} icon={<Person />}/>}
         </List>
     )
 }
