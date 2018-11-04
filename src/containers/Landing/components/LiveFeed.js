@@ -30,7 +30,7 @@ const styles: Object = {
 
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr',
-            gridTemplateRows: '1fr',
+            gridTemplateRows: '225px',
         },
     },
     mr: {marginRight: 10},

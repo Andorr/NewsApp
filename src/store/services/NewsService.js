@@ -10,7 +10,7 @@ class NewsService {
     // Fetch news
     fetchNews = (callback: Function) => {
         const response = API.getNews().response();
-        response.then((data: Object) => {
+        return response.then((data: Object) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItems(data)); // Add to store
             }
@@ -21,7 +21,7 @@ class NewsService {
     // Gets a specific news item based on id
     fetchNewsItem = (id: string, callback: Function) => {
         const response = API.getNewsById(id).response();
-        response.then((data: Object) => {
+        return response.then((data: Object) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItem(data)); // Add to store
             }
@@ -29,10 +29,34 @@ class NewsService {
         });
     }
 
+    // Get news created by user
+    fetchNewsByUser = (userId: string, callback: Function) => {
+        const response = API.getNewsByUser(userId).response();
+        return response.then((data: Object) => {
+            !callback || callback(response.isError, data);
+        });
+    }
+
     // Creates a news item
     createNewsItem = (item: Object, callback: Function) => {
         const response = API.createNews(item).response();
-        response.then((data: Object) => {
+        return response.then((data: Object) => {
+            !callback || callback(response.isError, data);
+        });
+    }
+
+    // Update a news item
+    updateNewsItem = (id: string, item: Object, callback: Function) => {
+        const response = API.updateNews(id, item).response();
+        return response.then((data) => {
+            !callback || callback(response.isError, data);
+        });
+    }
+
+    // Delete a news item
+    deleteNewsItem = (id: string, callback: Function) => {
+        const response = API.deleteNews(id).response();
+        return response.then((isError, data) => {
             !callback || callback(response.isError, data);
         });
     }
@@ -42,7 +66,7 @@ class NewsService {
         const dataItem: Object = {news: id, comment: comment};
 
         const response = API.createNewsComment(dataItem).response();
-        response.then((data: Object) => {
+        return response.then((data: Object) => {
             !callback || callback(response.isError, data);
         });
     }
@@ -50,7 +74,7 @@ class NewsService {
     // Like a post
     onLikePost = (id: string, callback: Function) => {
         const response = API.voteNews(id).response();
-        response.then((data) => {
+        return response.then((data) => {
             !callback || callback(response.isError, data);
         });
     }

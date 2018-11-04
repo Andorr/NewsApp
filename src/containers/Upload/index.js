@@ -2,9 +2,12 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../../URLS';
+import {connect} from 'react-redux';
 
 // API and service imports
 import NewsService from '../../store/services/NewsService';
+import * as NewsSelector from '../../store/reducers/NewsReducer';
+import * as UserSelector from '../../store/reducers/UserReducer';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -17,23 +20,7 @@ import TextEditor from '../../components/inputs/TextEditor';
 import Flex from '../../components/layout/Flex';
 import Select from '../../components/inputs/Select';
 
-type P = {
-    classes: Object,
-    history?: Object,
-}
-
-type S = {
-    isLoading: bool,
-
-    image: string,
-    title: string,
-    subtitle: string,
-    content: string,
-    category: string,
-    importance: number,
-}
-
-const styles: Object = {
+const styles: Object = (theme) => ({
     root: {
         maxWidth: 1000,
         margin: 'auto',
@@ -69,10 +56,32 @@ const styles: Object = {
     smPadding: {padding: 12},
     mb: {marginBottom: 24},
     mr: {marginRight: 24},
+    buttonWrapper: {
+        color: theme.palette.error.main,
+    }
+});
+
+type P = {
+    classes: Object,
+    history?: Object,
+    match?: Object,
+    getNewsById: Function,
 }
 
-const importance = [{value: 1, name: 'Important'}, {value: 2, name: 'Less important'}]
-const category = [{value: 'news', name: 'News'}, {value: 'sport', name: 'Sport'}, {value: 'culture', name: 'Culture'}];
+type S = {
+    isLoading: bool,
+    isEditing: bool,
+
+    image: string,
+    title: string,
+    subtitle: string,
+    content: string,
+    category: string,
+    importance: number,
+}
+
+const importance: Array<Object> = [{value: 1, name: 'Important'}, {value: 2, name: 'Less important'}]
+const category: Array<Object> = [{value: 'news', name: 'News'}, {value: 'sport', name: 'Sport'}, {value: 'culture', name: 'Culture'}];
 
 class Upload extends Component<P, S> {
 
@@ -80,6 +89,7 @@ class Upload extends Component<P, S> {
         super();
         this.state = {
             isLoading: false,
+            isEditing: false,
 
             image: '',
             title: '',
@@ -87,6 +97,41 @@ class Upload extends Component<P, S> {
             content: '',
             category: category[0].value,
             importance: importance[0].value,
+        }
+    }
+
+    componentDidMount() {
+        this.fetchNewsData();
+    }
+
+    fetchNewsData = async () => {
+        // If is provided, enter edit-mode, and load 
+        const id = this.props.match.params.id;
+        if(id) {
+            // Get news item by id
+            let news: Object = this.props.getNewsById(id);
+
+            // If not stored in state, fetch it
+            if(!news) {
+                this.setState({isLoading: true});
+                await NewsService.fetchNewsItem(id, (isError, data) => {
+                    news = data;
+                    this.setState({isLoading: false});
+                });
+            }
+
+            // If news is fetched
+            if(news && ((news.author && news.author.user === this.props.userInfo.id) || (!news.author || !news.author.user))) {
+                this.setState({
+                    title: news.title,
+                    subtitle: news.subtitle,
+                    content: news.content,
+                    category: news.category || '',
+                    importance: news.importance || 0,
+                    image: news.image,
+                    isEditing: true,
+                });
+            }
         }
     }
 
@@ -98,13 +143,7 @@ class Upload extends Component<P, S> {
         this.setState({title: '', image: '', subtitle: '', content: '', category: '', importance: 1});
     }
 
-    createNews = (event: Object) => {
-        event.preventDefault();
-
-        if(this.state.isLoading) {
-            return;
-        }
-
+    getInputData = () => {
         const {title, subtitle, content, category, importance} = this.state;
         // Validate image input
         const image: string = this.state.image;
@@ -118,21 +157,77 @@ class Upload extends Component<P, S> {
             category,
             importance,
         }
+        return newsItem;
+    }
 
+    createNews = (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        if(this.state.isLoading) {
+            return;
+        }
+
+        // Get data
+        const newsItem = this.getInputData();
+
+        // Save data
         this.setState({isLoading: true});
         NewsService.createNewsItem(newsItem, (err, data) => {
             if(!err && this.props.history) {
-                this.props.history.push(URLS.detail.concat(data._id));
+                this.props.history.push(URLS.detail.concat('/', data._id));
                 this.resetValues();
+            } else {
+                this.setState({isLoading: false});
             }
+        });
 
-            this.setState({isLoading: false});
+    }
+
+    saveNews = (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        if(this.state.isLoading) {
+            return;
+        }
+
+        // Get data
+        const newsItem = this.getInputData();
+
+        // Save data
+        this.setState({isLoading: true});
+        const id = this.props.match.params.id;
+        NewsService.updateNewsItem(id, newsItem, (err, data) => {
+            if(!err && this.props.history) {
+                this.props.history.push(URLS.detail.concat('/', data._id));
+            } else {
+                this.setState({isLoading: false});
+            }
+        });
+    }
+
+    deleteNews = (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        if(this.state.isLoading) {
+            return;
+        }
+
+        // Delete item
+        this.setState({isLoading: true});
+        const id = this.props.match.params.id;
+        NewsService.deleteNewsItem(id, (err, data) => {
+            if(!err) {
+                this.props.history.push(URLS.profile);
+            } else {
+                this.setState({isLoading: false});
+            }
         });
 
     }
 
     render() {
         const {classes} = this.props;
+        const {isEditing} = this.state;
         return (
             <Navigation>
                <Paper className={classes.root} elevation={1} square>
@@ -140,7 +235,7 @@ class Upload extends Component<P, S> {
                         <img className={classes.image} src={this.state.image} alt={this.state.title} />
                     </div>
 
-                    <form className={classes.content} onSubmit={this.createNews}>
+                    <form className={classes.content} onSubmit={(isEditing)? this.saveNews : this.createNews}>
                         <div className={classes.topSection}>
                             <Flex dir='column' align='flex-start'>
                                 <TextField
@@ -196,7 +291,16 @@ class Upload extends Component<P, S> {
                                 onChange={this.handleChange('category')}
                                 required/>
                         </Flex>
-                        <Button variant='contained' color='secondary' type='submit'>Create article</Button>
+                        {
+                            (this.state.isEditing)?
+                            <Flex className={classes.buttonWrapper} justify='space-between'>
+                                <Button variant='contained' color='secondary' type='submit'>Save article</Button>
+                                <Button variant='text' color='inherit' onClick={this.deleteNews}>Delete article</Button>
+                            </Flex>
+                            :
+                            <Button variant='contained' color='secondary' type='submit'>Create article</Button>
+                        }
+                        
                     </form>
                 </Paper>
             </Navigation>
@@ -204,4 +308,9 @@ class Upload extends Component<P, S> {
     }
 }
 
-export default withStyles(styles)(Upload);
+const mapStateToProps = (state) => ({
+    getNewsById: (id) => NewsSelector.getNewsById(id)(state),
+    userInfo: UserSelector.getUserInfo(state),
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(Upload));

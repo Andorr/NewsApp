@@ -39,7 +39,7 @@ type ListItemProps = {
 export const ListItem: React.StatelessFunctionalComponent<ListItemProps> = withStyles(styles)((props: Object) => {
     const {classes} = props;
     return (
-        <div className={classNames(classes.item, props.className)}>
+        <div {...props} className={classNames(classes.item, props.className)}>
             {props.children}
         </div>
     )

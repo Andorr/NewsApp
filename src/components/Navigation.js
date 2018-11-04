@@ -145,9 +145,9 @@ class Navigation extends Component<P, S> {
 
     componentDidMount() {
         // Fetching user data if authorized
-        if(AuthService.isAuthorized()) {
+        /* if(AuthService.isAuthorized()) {
             AuthService.fetchUserInfo();
-        }   
+        }    */
     }
 
     render() {

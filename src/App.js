@@ -66,7 +66,7 @@ class App extends Component {
               <Route exact path={URLS.landing} component={Landing} />
               <Route exact path={URLS.detail.concat('/:id')} component={Detail} />
               <Route exact path={URLS.login} component={LogIn} />
-              <PrivateRoute exact path={URLS.upload} component={Upload} />
+              <PrivateRoute exact path={URLS.upload.concat('/:id?')} component={Upload} />
               <PrivateRoute exact path={URLS.profile} component={Profile} />
             </Switch>
           </MuiThemeProvider>

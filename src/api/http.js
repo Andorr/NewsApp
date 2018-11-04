@@ -6,7 +6,7 @@ const TOKEN_COOKIE_ID = 'access_token';
 const cookies = new Cookies();
 
 export class IRequest {
-    constructor(method, url, data={}, args={}, withAuth=true) {
+    constructor(method: string, url: string, data: Object={}, args: Object={}, withAuth: bool=true) {
         this.method = method;
         this.data = data;
         this.headers = {'Content-Type': 'application/json'};

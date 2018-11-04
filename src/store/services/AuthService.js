@@ -12,7 +12,7 @@ class AuthService {
     // Create Account
     createAccount(email: string, password: string, nickname: string, callback: ?Function) {
         const response = AUTH.createAccount(email.trim().toLowerCase(), password, nickname).response();
-        response.then((data) => {
+        return response.then((data) => {
             if(response.isError === false) {
                 store.dispatch(UserActions.setUserInfo(data));
             }
@@ -23,7 +23,7 @@ class AuthService {
     // Login
     login(email: string, password: string, callback: ?Function) {
         const response = AUTH.token(email.trim().toLowerCase(), password).response();
-        response.then((data) => {
+        return response.then((data) => {
             if(response.isError === false && data.token) {
                 TOKEN.set(data.token);
                 this.fetchUserInfo();
@@ -35,7 +35,7 @@ class AuthService {
     // Fetches user information (email and nickname)
     fetchUserInfo(callback: ?Function) {
         const response = AUTH.fetchUser().response();
-        response.then((data) => {
+        return response.then((data) => {
             if(response.isError === false) {
                 store.dispatch(UserActions.setUserInfo(data));
                 ws.sendAuth(data._id);

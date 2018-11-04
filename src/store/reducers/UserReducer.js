@@ -3,6 +3,7 @@ import {actions} from '../actions/UserActions';
 const initialState = {
     email: null,
     nickname: null,
+    id: null,
 };
 
 const reducer = (state = initialState, action) => {

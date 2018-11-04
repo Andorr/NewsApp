@@ -14,6 +14,10 @@ export const base = createMuiTheme({
         secondary: {
             main: '#3d996e',
             contrastText: 'white',
+        },
+        error: {
+            main: '#EF5350',
+            contrastText: 'white',
         }
     }
 });
