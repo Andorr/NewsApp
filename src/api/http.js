@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 
-export const BASE = 'https://sys-ut-news-api.herokuapp.com/'; //'http://localhost:8080/';
+export const BASE = 'http://localhost:8080/'; //'https://sys-ut-news-api.herokuapp.com/'; //;
 const TOKEN_HEADER_NAME = 'Authorization';
 const TOKEN_COOKIE_ID = 'access_token';
 const cookies = new Cookies();
@@ -24,7 +24,11 @@ export class IRequest {
     response() {
         if (this.method === 'GET') {
             return new IResponse(getRequest(this.method, this.url, this.headers, this.data));
-        } else {
+        }
+        else if (this.method === 'POST_FILE') {
+            return formRequest('POST', this.url, this.headers, this.data);
+        }
+        else {
             return new IResponse(request(this.method, this.url, this.headers, this.data));
         }
     }
@@ -66,6 +70,30 @@ const getRequest = (method, url, headers) => {
     .catch((error) => console.log(error));
 };
 
+
+
+export const formRequest = (method, url, headers, data) => {
+    // Set data
+    let formData = new FormData();
+    for (let key in data) {
+        formData.append(key, data[key]);
+    }
+
+    let request = createCORSRequest(method, url);   
+
+    for(let key in headers) {
+        request.setRequestHeader(key, headers[key]);
+    }
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('Access-Control-Allow-Credentials', true);
+
+    // Send request
+    request.send(formData);
+    return request;
+};
+
+
+
 export class Token {
     set(token, expires_in=3600) {
         cookies.set(TOKEN_COOKIE_ID, token, {path: '/', expires: new Date(Date.now() + expires_in*1000)});
@@ -81,3 +109,26 @@ export class Token {
 }
 
 export const TOKEN = new Token();
+
+function createCORSRequest(method: string, url: string) {
+    var xhr = new XMLHttpRequest();
+    if (typeof xhr['withCredentials'] !== undefined) {
+
+        xhr.withCredentials = true;
+        xhr.open(method, url, true);
+  
+    } else if (typeof XDomainRequest !== undefined) {
+  
+        // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+  
+    } else {
+  
+        // Otherwise, CORS is not supported by the browser.
+        xhr = null;
+  
+    }
+    return xhr;
+}
+

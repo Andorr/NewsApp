@@ -17,6 +17,9 @@ export default {
     createNews: (data: Object) => {
         return new IRequest('POST', 'news/', data);
     },
+    createNewsWithFile: (data: Object) => { // Sends request with form-data
+        return new IRequest('POST_FILE', 'news/', data);
+    },
     updateNews: (id: string, data: Object) => {
         return new IRequest('PUT', 'news/'.concat(id), data);
     },

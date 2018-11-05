@@ -37,7 +37,7 @@ const styles: Object = (theme) => ({
         backgroundColor: 'whitesmoke',
 
         '@media only screen and (max-width: 800px)': {
-            minHeight: 260,
+            minHeight: 100,
         },
     },
     image: {
@@ -88,6 +88,9 @@ type S = {
     content: string,
     category: string,
     importance: number,
+
+    uploadedImage: Object,
+    previewImage: Object,
 }
 
 const importance: Array<Object> = [{value: 1, name: 'Important'}, {value: 2, name: 'Less important'}]
@@ -101,12 +104,15 @@ class Upload extends Component<P, S> {
             isLoading: false,
             isEditing: false,
 
-            image: '',
+            imageLink: '',
             title: '',
             subtitle: '',
             content: '',
             category: category[0].value,
             importance: importance[0].value,
+
+            uploadedImage: null,
+            previewImage: null,
         }
     }
 
@@ -146,7 +152,7 @@ class Upload extends Component<P, S> {
                     content: news.content,
                     category: news.category || '',
                     importance: news.importance || 0,
-                    image: news.image,
+                    imageLink: news.image,
                     isEditing: true,
                 });
             }
@@ -157,24 +163,48 @@ class Upload extends Component<P, S> {
         this.setState({[name]: (isValue) ? event : event.target.value});
     }
 
+    handleFileUpload = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const inputFile = event.target.files[0];
+        
+        if(inputFile) {
+            // Extract to previewable file
+            const reader: FileReader = new FileReader();
+            reader.onload = (e: ProgressEvent) => {
+                // Store files in state
+                this.setState({
+                    uploadedImage: inputFile,
+                    previewImage: e.target.result,
+                });
+            }
+
+            reader.readAsDataURL(inputFile);
+        }
+    }
+
     resetValues = () => {
-        this.setState({title: '', image: '', subtitle: '', content: '', category: '', importance: 1});
+        this.setState({title: '', imageLink: '', subtitle: '', content: '', category: '', importance: 1});
     }
 
     getInputData = () => {
         const {title, subtitle, content, category, importance} = this.state;
-        // Validate image input
-        const image: string = this.state.image;
 
         // Create news
         const newsItem: Object = {
             title,
             subtitle,
-            image_link: image,
             content,
             category,
             importance,
         }
+
+        // Validate image input
+        const {uploadedImage, imageLink} = this.state;
+        if(uploadedImage) {
+            newsItem.image = uploadedImage;
+        } else {
+            newsItem.image_link = imageLink;
+        }
+
         return newsItem;
     }
 
@@ -187,10 +217,13 @@ class Upload extends Component<P, S> {
 
         // Get data
         const newsItem = this.getInputData();
-
-        // Save data
         this.setState({isLoading: true});
-        NewsService.createNewsItem(newsItem, (err, data) => {
+        
+        let uploadRequest = (newsItem.image)? NewsService.createNewsItemWithFile : NewsService.createNewsItem;
+        // Save data
+        
+        uploadRequest(newsItem, (err: bool, data: Object) => {
+            console.log(err, data);
             if(!err && this.props.history) {
                 this.props.history.push(URLS.detail.concat('/', data._id));
                 this.resetValues();
@@ -246,12 +279,14 @@ class Upload extends Component<P, S> {
     render() {
         const {classes} = this.props;
         const {isEditing} = this.state;
+        const previewImage = this.state.previewImage || this.state.imageLink;
+
         return (
             <Navigation isLoading={this.state.isLoading}>
                 {this.state.isLoading ? null :
                <Paper className={classes.root} elevation={1} square>
                     <div className={classes.imageWrapper}>
-                        <img className={classes.image} src={this.state.image} alt={this.state.title} />
+                        <img className={classes.image} src={previewImage} alt={this.state.title} />
                     </div>
 
                     <form className={classes.content} onSubmit={(isEditing)? this.saveNews : this.createNews}>
@@ -279,12 +314,23 @@ class Upload extends Component<P, S> {
                                         className={classes.mb}
                                         label='Image-link'
                                         variant='outlined'
-                                        value={this.state.image}
-                                        onChange={this.handleChange('image')}
+                                        value={this.state.imageLink}
+                                        onChange={this.handleChange('imageLink')}
                                     />
-                                <Button variant='raised' color='secondary' disabled>
-                                    Upload Image
-                                </Button>
+                                
+                                <label htmlFor='button-input-file'>
+                                    <input
+                                        id='button-input-file'
+                                        type='file'
+                                        style={{display: 'none'}}
+                                        onChange={this.handleFileUpload}
+                                        accept='image/*'/>
+                                    <Button component='span' variant='raised' color='secondary'>
+                                        Upload Image 
+                                    </Button>
+                                </label>
+                                
+                                
                             </Flex>
                         </div>
                         <TextEditor
