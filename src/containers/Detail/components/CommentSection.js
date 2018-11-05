@@ -3,7 +3,6 @@ import * as React from 'react';
 import {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
-import moment from 'moment';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -12,8 +11,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 // Project Components
-import List, {ListItem} from '../../../components/layout/List';
+import List from '../../../components/layout/List';
 import Flex from '../../../components/layout/Flex';
+import CommentItem from './CommentItem';
 
 const styles: Object = {
     root: {
@@ -22,52 +22,19 @@ const styles: Object = {
     inputWrapper: {
         margin: '12px 0',
     },
-    item: {
-        backgroundColor: 'whitesmoke',
-        margin: '8px 0',
-        
-    },
-    fullWidth: {
-        width: '100%',
-    },
-    content: {
-        padding: '12px 0',
-    }
 }
 
-type CommentProps = {
-    classes?: Object,
-    comment?: string,
-    author?: string,
-    timePosted?: string,
-}
 
-const CommentItem : React.StatelessFunctionalComponent<CommentProps> = withStyles(styles)((props) => {
-    const {classes} = props;
-    return (
-        <ListItem className={classes.item}>
-            <Flex dir='column' align='flex-start'>
-                <Flex className={classes.fullWidth} justify='space-between'>
-                    <Typography variant='subheading'><strong>{props.author}</strong></Typography>
-                    <div>
-                        <Typography variant='caption'>{moment(props.timePosted).calendar()}</Typography>
-                    </div>
-                </Flex>
-                <div className={classes.content}>
-                    {props.comment}
-                </div>
-            </Flex>
-           
-        </ListItem>
-    )
-});
 
 type P = {
     classes: Object,
     className?: string,
     onCommentPost?: Function,
+    onCommentDelete?: Function,
+    onCommentUpdate?: Function,
     comments?: Array<Object>,
     isAuthorized?: bool,
+    userId?: string,
 };
 
 type S = {
@@ -83,11 +50,11 @@ class CommentSection extends Component<P,S> {
         }
     }
 
-    handleChange = (name) => (event) => {
+    handleChange = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
         this.setState({[name]: event.target.value});
     }
 
-    postComment = (event) => {
+    postComment = (event: SyntheticEvent<HTMLInputElement>) => {
         event.preventDefault();
 
         const comment = this.state.comment;
@@ -104,6 +71,21 @@ class CommentSection extends Component<P,S> {
         }
     }
 
+    onCommentDelete = (id: string) => (event: SyntheticEvent<HTMLInputElement>) => {
+        event.preventDefault();
+
+        // Delete comment
+        if(this.props.onCommentDelete) {
+            this.props.onCommentDelete(id);
+        }
+    }
+
+    onCommentUpdate = (commentId: string, comment: string) => { 
+       // Update comment
+        if(this.props.onCommentUpdate) {
+            this.props.onCommentUpdate(commentId, comment);
+        }
+    }
 
 
     render() {
@@ -145,9 +127,13 @@ class CommentSection extends Component<P,S> {
                     {comments.map((value, index) => (
                         <CommentItem
                             key={value._id}
+                            id={value._id}
+                            isOwner={this.props.isAuthorized && value.user === this.props.userId}
                             comment={value.comment}
                             author={value.user_nickname}
-                            timePosted={value.created_at} />
+                            timePosted={value.created_at}
+                            onCommentDelete={this.onCommentDelete(value._id)}
+                            onCommentUpdate={this.onCommentUpdate}/>
                     ))}
                     
                 </List>

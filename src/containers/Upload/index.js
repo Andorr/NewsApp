@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import {connect} from 'react-redux';
+import {type Match} from '../../types';
 
 // API and service imports
 import NewsService from '../../store/services/NewsService';
@@ -26,10 +27,18 @@ const styles: Object = (theme) => ({
         margin: 'auto',
         marginTop: '100px',
         marginBottom: 100,
+
+        '@media only screen and (max-width: 800px)': {
+            marginTop: 0,
+        },
     },
     imageWrapper: {
         minHeight: 340,
         backgroundColor: 'whitesmoke',
+
+        '@media only screen and (max-width: 800px)': {
+            minHeight: 260,
+        },
     },
     image: {
         width: '100%',
@@ -63,9 +72,10 @@ const styles: Object = (theme) => ({
 
 type P = {
     classes: Object,
-    history?: Object,
-    match?: Object,
+    history: Object,
+    match: Match,
     getNewsById: Function,
+    userInfo: Object,
 }
 
 type S = {
@@ -81,7 +91,7 @@ type S = {
 }
 
 const importance: Array<Object> = [{value: 1, name: 'Important'}, {value: 2, name: 'Less important'}]
-const category: Array<Object> = [{value: 'news', name: 'News'}, {value: 'sport', name: 'Sport'}, {value: 'culture', name: 'Culture'}];
+let category: Array<Object> = [{value: 'other', name: 'Other'}];
 
 class Upload extends Component<P, S> {
 
@@ -105,8 +115,15 @@ class Upload extends Component<P, S> {
     }
 
     fetchNewsData = async () => {
+        await NewsService.getCategories((isError: bool, categories: Array<string>) => {
+            if(categories && categories.length > 0) {
+                category = categories.map((value) => ({value: value, name: value.charAt(0).toUpperCase() + value.slice(1)}));
+                this.setState({category: category[0].value});
+            }
+        });
+
         // If is provided, enter edit-mode, and load 
-        const id = this.props.match.params.id;
+        const id: string = this.props.match ? this.props.match.params.id : '';
         if(id) {
             // Get news item by id
             let news: Object = this.props.getNewsById(id);
@@ -121,7 +138,8 @@ class Upload extends Component<P, S> {
             }
 
             // If news is fetched
-            if(news && ((news.author && news.author.user === this.props.userInfo.id) || (!news.author || !news.author.user))) {
+            const userId: string = this.props.userInfo ? this.props.userInfo.id : '';
+            if(news && ((news.author && news.author.user === userId) || (!news.author || !news.author.user))) {
                 this.setState({
                     title: news.title,
                     subtitle: news.subtitle,
@@ -160,7 +178,7 @@ class Upload extends Component<P, S> {
         return newsItem;
     }
 
-    createNews = (event: SyntheticEvent) => {
+    createNews = (event: SyntheticEvent<HTMLInputElement>) => {
         event.preventDefault();
 
         if(this.state.isLoading) {
@@ -183,7 +201,7 @@ class Upload extends Component<P, S> {
 
     }
 
-    saveNews = (event: SyntheticEvent) => {
+    saveNews = (event: SyntheticEvent<HTMLInputElement>) => {
         event.preventDefault();
 
         if(this.state.isLoading) {
@@ -191,11 +209,11 @@ class Upload extends Component<P, S> {
         }
 
         // Get data
-        const newsItem = this.getInputData();
+        const newsItem: Object = this.getInputData();
 
         // Save data
         this.setState({isLoading: true});
-        const id = this.props.match.params.id;
+        const id: string = this.props.match ? this.props.match.params.id : '';
         NewsService.updateNewsItem(id, newsItem, (err, data) => {
             if(!err && this.props.history) {
                 this.props.history.push(URLS.detail.concat('/', data._id));
@@ -205,7 +223,7 @@ class Upload extends Component<P, S> {
         });
     }
 
-    deleteNews = (event: SyntheticEvent) => {
+    deleteNews = (event: SyntheticEvent<HTMLInputElement>) => {
         event.preventDefault();
 
         if(this.state.isLoading) {
@@ -214,8 +232,8 @@ class Upload extends Component<P, S> {
 
         // Delete item
         this.setState({isLoading: true});
-        const id = this.props.match.params.id;
-        NewsService.deleteNewsItem(id, (err, data) => {
+        const id: string = this.props.match.params.id;
+        NewsService.deleteNewsItem(id, (err: bool, data: Object) => {
             if(!err) {
                 this.props.history.push(URLS.profile);
             } else {
@@ -229,7 +247,8 @@ class Upload extends Component<P, S> {
         const {classes} = this.props;
         const {isEditing} = this.state;
         return (
-            <Navigation>
+            <Navigation isLoading={this.state.isLoading}>
+                {this.state.isLoading ? null :
                <Paper className={classes.root} elevation={1} square>
                     <div className={classes.imageWrapper}>
                         <img className={classes.image} src={this.state.image} alt={this.state.title} />
@@ -303,6 +322,7 @@ class Upload extends Component<P, S> {
                         
                     </form>
                 </Paper>
+                }
             </Navigation>
         )
     }

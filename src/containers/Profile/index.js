@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import {connect} from 'react-redux';
+import {type UserInfo} from '../../types';
 
 // API and service imports
 import * as UserSelectors from '../../store/reducers/UserReducer';
@@ -13,34 +14,62 @@ import NewsService from '../../store/services/NewsService';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 
 // Project Components
 import Navigation from '../../components/Navigation';
 import List from '../../components/layout/List';
 import ArticleItem from './components/ArticleItem';
+import Flex from '../../components/layout/Flex';
 
-const styles: Object = {
+const styles: Function = (theme) => ({
     root: {
         maxWidth: 1000,
         margin: 'auto',
+        padding: 10,
         paddingTop: 20,
+        paddingBottom: 100,
 
         display: 'grid',
         gridTemplateColumns: '3fr 1fr',
+        gridGap: '16px',
 
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr',
         }
     },
-}
+    details: {
+        marginTop: 80,
+        border: '1px solid rgba(0,0,0,0.1)',
+        maxHeight: 140,
+        padding: '80px 12px 12px 12px',
+        position: 'relative',
+    },
+    margin: {
+        margin: 20,
+    },
+    avatar: {
+        position: 'absolute',
+        top: '-74px', left: 0, right: 0,
+        margin: 'auto',
+        width: 148,
+        height: 148,
+        border: '2px solid ' + theme.palette.secondary.main,
+    },
+    gutter: {
+        marginTop: 16,
+    },
+});
 
 
 type P = {
     classes: Object,
     history: Object,
+    userInfo?: UserInfo,
 }
 
 type S = {
+    isLoading: bool,
     news: Array<Object>,
 }
 
@@ -49,6 +78,7 @@ class Profile extends Component<P, S> {
     constructor() {
         super();
         this.state = {
+            isLoading: false,
             news: [],
         }
     }
@@ -59,13 +89,16 @@ class Profile extends Component<P, S> {
 
     fetchNews = async () => {
 
+        this.setState({isLoading: true});
         await AuthService.fetchUserInfo((isError: bool, data: Object) => {
 
         });
-        NewsService.fetchNewsByUser(this.props.userInfo.id, (isError: bool, data: Object) => {
+        const id: string = this.props.userInfo ? this.props.userInfo.id : '';
+        NewsService.fetchNewsByUser(id, (isError: bool, data: Array<Object>) => {
             if(isError === false) {
                 this.setState({news: data});
             }
+            this.setState({isLoading: false});
         });
     }
 
@@ -81,8 +114,12 @@ class Profile extends Component<P, S> {
     render() {
         const {classes} = this.props;
         const news = this.state.news || [];
+        const firstLetter = this.props.userInfo && this.props.userInfo.nickname ? this.props.userInfo.nickname[0] : 'A';
+
+        const userInfo = this.props.userInfo || {};
+
         return (
-            <Navigation>
+            <Navigation isLoading={this.state.isLoading}>
                 <div className={classes.root}>
                     <div>
                         <Typography variant='display1' gutterBottom>Your articles</Typography>
@@ -91,16 +128,28 @@ class Profile extends Component<P, S> {
                         <List>
                             {news.map((value) => (
                                 <ArticleItem
-                                key={value._id}
-                                
-                                title={value.title}
-                                onClick={() => this.goTo(URLS.upload.concat('/', value._id))}/>
+                                    key={value._id}
+                                    title={value.title}
+                                    image={value.image}
+                                    time={value.created_at}
+                                    onClick={() => this.goTo(URLS.upload.concat('/', value._id))}/>
                             ))}
                         </List>
+                        {news.length === 0 &&
+                            <Typography
+                                className={classes.margin}
+                                variant='subheading'
+                                align='center'>
+                                You have no published articles
+                            </Typography>
+                        }
                     </div>
-                    <div>
-                        <Button variant='contained' color='secondary' onClick={this.logout}>Log out</Button>
-                    </div>
+                    <Flex className={classes.details} dir='column'>
+                        <Avatar className={classes.avatar}>{firstLetter}</Avatar>
+                        <Typography className={classes.gutter} variant='caption'>{userInfo.email}</Typography>
+                        <Typography className={classes.gutter} variant='caption'>{userInfo.nickname}</Typography>
+                        <Button className={classes.gutter} variant='contained' color='secondary' onClick={this.logout}>Log out</Button>
+                    </Flex>
                     
                 </div>
             </Navigation>

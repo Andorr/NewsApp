@@ -57,11 +57,15 @@ class Landing extends Component {
 
     componentDidMount() {
         window.scrollTo(0,0);
+        this.fetchData();
+        
+    }
 
+    fetchData = async () => {
         // Fetch news items
-        NewsService.fetchNews((isError, data) => {
-            this.setState({isLoading: false});
-        });
+        await NewsService.fetchNews();
+        await NewsService.getCategories();
+        this.setState({isLoading: false});
     }
 
     render() {

@@ -23,8 +23,21 @@ export default {
     deleteNews: (id: string) => {
         return new IRequest('DELETE', 'news/'.concat(id));
     },
-    createNewsComment: (data) => {
+
+    // Comments
+    createNewsComment: (data: Object) => {
         return new IRequest('POST', 'news/comment/', data);
+    },
+    deleteNewsComment: (newsId: string, commentId: string) => {
+        return new IRequest('DELETE', 'news/comment/'.concat(commentId), {news: newsId});
+    },
+    updateNewsComment: (newsId: string, commentId: string, comment: string) => {
+        return new IRequest('PUT', 'news/comment/'.concat(commentId), {news: newsId, comment: comment});
+    },
+
+    // Categories
+    getCategories: () => {
+        return new IRequest('GET', 'news/category', null, false);
     },
 };
 

@@ -105,8 +105,8 @@ class LogInForm extends Component<P, S> {
                 this.props.history.push(URLS.landing);
             } else {
                 this.setState({errorMessage: 'Email or password was incorrect'});
+                this.setState({isLoading: false});
             }
-            this.setState({isLoading: false});
         });
     }
 
