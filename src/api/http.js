@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 
-export const BASE = 'http://localhost:8080/'; //'https://sys-ut-news-api.herokuapp.com/'; //;
+export const BASE = 'https://sys-ut-news-api.herokuapp.com/'; // 'http://localhost:8080/';
 const TOKEN_HEADER_NAME = 'Authorization';
 const TOKEN_COOKIE_ID = 'access_token';
 const cookies = new Cookies();
@@ -111,7 +111,7 @@ export class Token {
 export const TOKEN = new Token();
 
 function createCORSRequest(method: string, url: string) {
-    var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest('Authorization', 'token');
     if (typeof xhr['withCredentials'] !== undefined) {
 
         xhr.withCredentials = true;
