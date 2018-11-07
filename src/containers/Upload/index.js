@@ -7,6 +7,7 @@ import {type Match} from '../../types';
 
 // API and service imports
 import NewsService from '../../store/services/NewsService';
+import * as NewsActions from '../../store/actions/NewsActions';
 import * as NewsSelector from '../../store/reducers/NewsReducer';
 import * as UserSelector from '../../store/reducers/UserReducer';
 
@@ -75,6 +76,7 @@ type P = {
     history: Object,
     match: Match,
     getNewsById: Function,
+    setNewsItem: Function,
     userInfo: Object,
 }
 
@@ -222,11 +224,9 @@ class Upload extends Component<P, S> {
         let uploadRequest = (newsItem.image)? NewsService.createNewsItemWithFile : NewsService.createNewsItem;
         // Save data
         
-        uploadRequest(newsItem, (err: bool, data: Object) => {
-            console.log(err, data);
-            if(!err && this.props.history) {
+        uploadRequest(newsItem, (isError: bool, data: Object) => {
+            if(isError === false && this.props.history) {
                 this.props.history.push(URLS.detail.concat('/', data._id));
-                this.resetValues();
             } else {
                 this.setState({isLoading: false});
             }
@@ -244,11 +244,14 @@ class Upload extends Component<P, S> {
         // Get data
         const newsItem: Object = this.getInputData();
 
+        let uploadRequest = (newsItem.image)? NewsService.updateNewsItemWithFile : NewsService.updateNewsItem;
+
         // Save data
         this.setState({isLoading: true});
         const id: string = this.props.match ? this.props.match.params.id : '';
-        NewsService.updateNewsItem(id, newsItem, (err, data) => {
-            if(!err && this.props.history) {
+        uploadRequest(id, newsItem, (isError: bool, data: Object) => {
+            if(isError === false && this.props.history) {
+                this.props.setNewsItem(data);
                 this.props.history.push(URLS.detail.concat('/', data._id));
             } else {
                 this.setState({isLoading: false});
@@ -374,9 +377,13 @@ class Upload extends Component<P, S> {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: Object) => ({
     getNewsById: (id) => NewsSelector.getNewsById(id)(state),
     userInfo: UserSelector.getUserInfo(state),
-})
+});
 
-export default connect(mapStateToProps)(withStyles(styles)(Upload));
+const mapDispatchToProps = (dispatch: Function) => ({
+    setNewsItem: (data: Object) => dispatch(NewsActions.setNewsItem(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Upload));

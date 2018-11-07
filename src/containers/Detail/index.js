@@ -32,9 +32,12 @@ const styles: Object = {
         margin: 'auto',
         paddingTop: 30,
         paddingBottom: 100,
+        overflowX: 'hidden',
     
         '@media only screen and (max-width: 600px)': {
             padding: 0,
+            
+            maxWidth: '100vw',
         }
     },
     imageWrapper: {

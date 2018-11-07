@@ -23,6 +23,9 @@ export default {
     updateNews: (id: string, data: Object) => {
         return new IRequest('PUT', 'news/'.concat(id), data);
     },
+    updateNewsWithFile: (id: string, data: Object) => {
+        return new IRequest('PUT_FILE', 'news/'.concat(id), data);
+    },
     deleteNews: (id: string) => {
         return new IRequest('DELETE', 'news/'.concat(id));
     },

@@ -64,6 +64,7 @@ class NewsGroup extends Component<P> {
                         key={index}
                         image={value.image}
                         title={value.title}
+                        subtitle={value.subtitle}
                         className={classes[itemN(index)]} />
                 ))}
             </div>

@@ -81,7 +81,7 @@ class NewsItem extends Component<P> {
                     </div>
                     <div className={classes.textWrapper}>
                         <Typography className={classNames(classes.text, this.props.large ? classes.lgText : '')} gutterBottom >{title}</Typography>
-                        {this.props.large && <Typography variant='title' >{subtitle}</Typography>}
+                        <Typography variant={(this.props.large)? 'title' : 'body2'} >{subtitle}</Typography>
                     </div>
                 </Link>
             </Paper>

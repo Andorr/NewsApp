@@ -52,22 +52,25 @@ class NewsService {
     // Create a news item with file upload
     createNewsItemWithFile = (item: Object, callback: Function) => {
         const response = API.createNewsWithFile(item).response();
-        response.onreadystatechange = () => {
-            console.log(response);
-            console.log(response.status);
-            if(response.status >= 200 && response.status <= 508) {
-                let responseData = response.response;
-                responseData = responseData ? JSON.parse(responseData) : null; // Convert response to JSON-Object
-                !callback || callback(response.status === 201, responseData);
-            }
-        }
-        
+        return response.then((data: Object) => {
+            !callback || callback(response.isError, data);
+            return data;
+        })
     }
 
     // Update a news item
     updateNewsItem = (id: string, item: Object, callback: Function) => {
         const response = API.updateNews(id, item).response();
-        return response.then((data) => {
+        return response.then((data: Object) => {
+            !callback || callback(response.isError, data);
+            return data;
+        });
+    }
+
+    // Update a news item with file upload
+    updateNewsItemWithFile = (id: string, item: Object, callback: Function) => {
+        const response = API.updateNewsWithFile(id, item).response();
+        return response.then((data: Object) => {
             !callback || callback(response.isError, data);
             return data;
         });
