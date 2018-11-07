@@ -22,9 +22,9 @@ const styles: Object = {
         paddingBottom: 100,
         minHeight: '100vh',
         
-        '@media only screen and (max-width: 100px)': {
-            maxWidth: '100vw',
+        '@media only screen and (max-width: 1000px)': {
             overflowX: 'hidden',
+            paddingTop: 8,
         },
         
     },

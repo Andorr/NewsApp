@@ -5,6 +5,7 @@ import moment from 'moment';
 
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 // Project Components
 import Flex from '../../../components/layout/Flex';
@@ -21,34 +22,23 @@ type P = {
 
 const styles: Object = {
     root: {
-        minHeight: 60,
         height: 'auto',
         backgroundColor: 'white',
         overflowX: 'hidden',
     },
     wrapper: {
-       /*  display: 'grid',
-        gridTemplateColumns: '1fr 1fr', */
-
         padding: 16,
         maxWidth: 1000,
         margin: 'auto',
 
-    /*     '@media only screen and (max-width: 800px)': {
-            gridTemplateColumns: '1fr',
-            gridTemplateRows: '225px',
-        }, */
+        '@media only screen and (max-width: 800px)': {
+            padding: 10,
+        },
     },
     item: {
         
         borderRight: '1px solid rgba(0,0,0,0.1)',
         padding: '1px 12px 2px 8px',
-
-        '@media only screen and (max-width: 800px)': {
-            width: '100vw', 
-            minWidth: '100vw',
-            maxWidth: '100vw',
-        }, 
     },
     itemTitle: {
         marginRight: 10,
@@ -96,6 +86,8 @@ const settings = {
     slidesToScroll: 1,
     slidesPerRow: 1,
     autoplay: true,
+    autoplaySpeed: 5000,
+    customPaging: i => <Button>{i + 1}</Button>
 }
 
 class LiveFeed extends React.Component<P> {

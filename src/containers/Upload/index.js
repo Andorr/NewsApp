@@ -84,15 +84,15 @@ type S = {
     isLoading: bool,
     isEditing: bool,
 
-    image: string,
+    imageLink: string,
     title: string,
     subtitle: string,
     content: string,
     category: string,
     importance: number,
 
-    uploadedImage: Object,
-    previewImage: Object,
+    uploadedImage: ?Object,
+    previewImage: ?Object,
 }
 
 const importance: Array<Object> = [{value: 1, name: 'Important'}, {value: 2, name: 'Less important'}]
