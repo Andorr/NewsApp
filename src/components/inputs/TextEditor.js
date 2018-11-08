@@ -190,7 +190,7 @@ class TextEditor extends Component<P, S> {
                         onChange={this.handleChange}/>
                 </Fragment>
                 }
-                {tabValue === 1 && <ReactMarkdown className={classes.preview} source={value} plugins={[breaks]} escapeHtml={false}/>}
+                {tabValue === 1 && <div className='renderer'><ReactMarkdown className={classes.preview} source={value} plugins={[breaks]} escapeHtml={false}/></div>}
             </div>
         );
     }

@@ -2,6 +2,8 @@
 import * as React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import moment from 'moment';
+import {Link} from 'react-router-dom';
+import URLS from '../../../URLS';
 
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
@@ -39,6 +41,10 @@ const styles: Object = {
         
         borderRight: '1px solid rgba(0,0,0,0.1)',
         padding: '1px 12px 2px 8px',
+
+        '&:hover': {
+            textDecoration: 'underline',
+        }
     },
     itemTitle: {
         marginRight: 10,
@@ -69,22 +75,25 @@ type FeedProps = {
 const FeedItem : React.StatelessFunctionalComponent<FeedProps> = withStyles(styles)((props) => {
     const {classes} = props;
     return (
-        <div className={props.className}>
-            <Flex>
-                <Typograhpy className={classes.itemTitle} variant='title' gutterBottom>{props.title}</Typograhpy>
-                <Typograhpy className={classes.itemTime} variant='caption' align='right'>{moment(props.time).fromNow()}</Typograhpy>
-            </Flex>
-            <Typograhpy variant='caption'>{props.subtitle}</Typograhpy>
-        </div>
+        <Link to={props.to || ''} style={{textDecoration: 'none'}}>
+            <div className={props.className}>
+                
+                <Flex>
+                    <Typograhpy className={classes.itemTitle} variant='title' gutterBottom>{props.title}</Typograhpy>
+                    <Typograhpy className={classes.itemTime} variant='caption' align='right'>{moment(props.time).fromNow()}</Typograhpy>
+                </Flex>
+                <Typograhpy variant='caption'>{props.subtitle}</Typograhpy>
+                
+            </div>
+        </Link>
     )
 });
 
 const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
     slidesToScroll: 1,
-    slidesPerRow: 1,
+    slidesToShow: 1,
     autoplay: true,
     autoplaySpeed: 5000,
     customPaging: i => <Button>{i + 1}</Button>
@@ -101,6 +110,7 @@ class LiveFeed extends React.Component<P> {
                         {data && data.map((value, i) => (
                             <FeedItem
                                 key={i}
+                                to={URLS.detail.concat('/', value.id)}
                                 className={classes.item}
                                 title={value.title}
                                 subtitle={value.subtitle}

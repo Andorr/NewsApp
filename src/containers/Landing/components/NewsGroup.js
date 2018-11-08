@@ -27,7 +27,7 @@ const styles: Object = {
         '@media only screen and (max-width: 600px)': {
             gridTemplateColumns: '100%',
             gridTemplateAreas: 'unset',
-            gridTemplateRows: 'repeat(4, 1fr)',
+            gridTemplateRows: 'repeat(4, auto)',
             padding: '0 4px 16px 4px',
         },
     },

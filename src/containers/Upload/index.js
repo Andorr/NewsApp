@@ -15,6 +15,11 @@ import * as UserSelector from '../../store/reducers/UserReducer';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+
+// Icons
+import Delete from '@material-ui/icons/Delete';
+import UploadIcon from '@material-ui/icons/CloudUpload';
 
 // Project Components
 import Navigation from '../../components/Navigation';
@@ -52,7 +57,7 @@ const styles: Object = (theme) => ({
     },
     topSection: {
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '1fr',
         padding: '14px 0',
 
         '@media only screen and (max-width: 600px)': {
@@ -66,6 +71,7 @@ const styles: Object = (theme) => ({
     smPadding: {padding: 12},
     mb: {marginBottom: 24},
     mr: {marginRight: 24},
+    smr: {marginRight: 12},
     buttonWrapper: {
         color: theme.palette.error.main,
     }
@@ -163,6 +169,13 @@ class Upload extends Component<P, S> {
 
     handleChange = (name: string, isValue: bool = false) => (event: Object) => {
         this.setState({[name]: (isValue) ? event : event.target.value});
+    }
+
+    deleteUploadedImages = () => {
+        this.setState({
+            uploadedImage: null,
+            previewImage: null,
+        })
     }
 
     handleFileUpload = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -294,8 +307,9 @@ class Upload extends Component<P, S> {
 
                     <form className={classes.content} onSubmit={(isEditing)? this.saveNews : this.createNews}>
                         <div className={classes.topSection}>
-                            <Flex dir='column' align='flex-start'>
+
                                 <TextField
+                                    fullWidth
                                     className={classes.mb}
                                     label='Title'
                                     variant='outlined'
@@ -304,6 +318,7 @@ class Upload extends Component<P, S> {
                                     required
                                 />
                                 <TextField
+                                    fullWidth
                                     className={classes.mb}
                                     label='Subtitle'
                                     variant='outlined'
@@ -311,30 +326,37 @@ class Upload extends Component<P, S> {
                                     onChange={this.handleChange('subtitle')}
                                     required
                                 />
-                            </Flex>
-                            <Flex dir='column' align='flex-end'>
+
                                 <TextField
-                                        className={classes.mb}
-                                        label='Image-link'
-                                        variant='outlined'
-                                        value={this.state.imageLink}
-                                        onChange={this.handleChange('imageLink')}
+                                    fullWidth
+                                    className={classes.mb}
+                                    label='Image-link'
+                                    variant='outlined'
+                                    value={this.state.imageLink}
+                                    onChange={this.handleChange('imageLink')}
                                     />
                                 
-                                <label htmlFor='button-input-file'>
-                                    <input
-                                        id='button-input-file'
-                                        type='file'
-                                        style={{display: 'none'}}
-                                        onChange={this.handleFileUpload}
-                                        accept='image/*'/>
-                                    <Button component='span' variant='raised' color='secondary'>
-                                        Upload Image 
-                                    </Button>
-                                </label>
+                                <Flex>
+                                    <label htmlFor='button-input-file'>
+                                        <input
+                                            id='button-input-file'
+                                            type='file'
+                                            style={{display: 'none'}}
+                                            onChange={this.handleFileUpload}
+                                            accept='image/*'/>
+                                        <Button component='span' variant='raised' color='secondary'>
+                                            <UploadIcon className={classes.smr}/>
+                                            Upload Image 
+                                        </Button>
+                                    </label>
+                                    <IconButton
+                                        onClick={this.deleteUploadedImages}
+                                        disabled={this.state.uploadedImage === null}>
+                                        <Delete />
+                                    </IconButton>
+                                </Flex>
                                 
-                                
-                            </Flex>
+
                         </div>
                         <TextEditor
                             className={classes.editor}
