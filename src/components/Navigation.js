@@ -46,7 +46,12 @@ const styles = (theme) => ({
         marginTop: 64,
         '@media only screen and (max-width: 600px)': {
             marginTop: 56
-        }
+        },
+        position: 'relative',
+    },
+    progress: {
+        position: 'absolute',
+        bottom: '-5px', left: 0, right: 0,
     },
     navContent: {
         width: '100%'
@@ -279,7 +284,7 @@ class Navigation extends Component<P, S> {
                         this.props.whitesmoke ? classes.whitesmoke : ''
                     )}
                 >
-                    {this.props.isLoading ? <LinearProgress /> : null}
+                    {this.props.isLoading ? <LinearProgress className={classes.progress} /> : null}
                     {this.props.noRenderAtLoad &&
                     this.props.isLoading ? null : (
                         <div className={classes.wrapper}>

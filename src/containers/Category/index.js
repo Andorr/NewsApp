@@ -11,26 +11,31 @@ import * as NewsSelector from '../../store/reducers/NewsReducer';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Grow from '@material-ui/core/Grow';
 
 // Project Components
 import Navigation from '../../components/Navigation';
 import NewsGroup from '../Landing/components/NewsGroup';
 
-const styles: Object = {
+const styles: Object = (theme) => ({
     root: {
         maxWidth: 1000,
+        width: '100%',
+        minHeight: '100vh',
         margin: 'auto',
-        paddingTop: 30,
+        paddingTop: 12,
         paddingBottom: 100,
     },
     topSection: {
-        padding: 22,
+        backgroundColor: 'white',
+        boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.1)',
+    },
+    topContent: {
+        padding: '22px 22px 4px 22px',
         maxWidth: 1000,
         margin: 'auto',
     }
-}
+});
 
 type P = {
     classes: Object,
@@ -74,7 +79,7 @@ class Category extends React.Component<P, S> {
         let news = this.props.getNewsByCategory(category) || [];
 
         if(news.length === 0) {
-            this.setState({isLoading: false});
+            this.setState({isLoading: true});
             await NewsService.fetchNewsByCategory(category, (isError: bool, data: Array<Object>) => {
                 if(isError === false) {
                     this.props.setNews(data);
@@ -95,13 +100,14 @@ class Category extends React.Component<P, S> {
         const category: string = this.props.match.params.category;
 
         return (
-            <Navigation isLoading={this.state.isLoading}>
+            <Navigation isLoading={this.state.isLoading} whitesmoke>
                 <div className={classes.topSection}>
-                    <Typography variant='display1' gutterBottom>{category ? category.charAt(0).toUpperCase() + category.slice(1) : ''}</Typography>
-                    <Divider />
+                    <div className={classes.topContent}>
+                        <Typography variant='display1' gutterBottom>{category ? category.charAt(0).toUpperCase() + category.slice(1) : ''}</Typography>
+                    </div>
                 </div>
+                <Grow in={!this.state.isLoading}>
                 <div className={classes.root}>
-                    {this.state.isFetcing && <CircularProgress /> }
                     {data.length > 0 && 
                         data.map((value, i) => (
                             <NewsGroup key={i} data={value} right={i%2 === 0}/>
@@ -109,6 +115,7 @@ class Category extends React.Component<P, S> {
                     }
                     {data.length === 0 && <Typography variant='subheading' align='center'>Ingen annonser å vise</Typography>}
                 </div>
+                </Grow>
             </Navigation>
         )
     }
