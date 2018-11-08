@@ -4,4 +4,5 @@ export default {
     login: '/login',
     upload: '/upload',
     profile: '/account',
+    category: '/category',
 };

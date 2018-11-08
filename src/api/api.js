@@ -11,6 +11,9 @@ export default {
     getNewsByUser: (userId: string) => {
         return new IRequest('GET', 'news/?user='.concat(userId));
     },
+    getNewsByCategory: (category: string) => {
+        return new IRequest('GET', 'news/?category='.concat(category));
+    },
     voteNews: (id: string) => {
         return new IRequest('POST', 'news/vote/', {news: id});
     },

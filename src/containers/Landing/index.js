@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import URLS from '../../URLS';
+import {mergeElements} from '../../utils';
 
 // Redux and action imports
 import NewsService from '../../store/services/NewsService';
@@ -32,19 +33,6 @@ const styles: Object = {
         marginBottom: 12,
     }
 }
-
-const mergeElements: Function = (num: number, list: Array<Object>, start: number = 2) => {
-    const arr = [];
-    let from: number = start;
-    let to: number = list.length > (num + start) ? (num + start) : list.length;
-    while(from < list.length) {
-        arr.push(list.slice(from ,to));
-        from += num;
-        to = (from + num) < list.length ? from + num : list.length;
-    }
-    return arr;
-}
-
 
 class Landing extends Component {
 

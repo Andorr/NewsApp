@@ -85,6 +85,12 @@ const styles = (theme) => ({
     },
     zIndex: {
         zIndex: 100
+    },
+    uriBtn: {
+        color: 'white',
+        '@media only screen and (max-width: 900px)': {
+            fontSize: 8,
+        }
     }
 });
 
@@ -106,7 +112,7 @@ const RightMenu: React.StatelessFunctionalComponent<RightMenuProps> = withStyles
                 New article
             </Button>
         </Hidden>
-        <Hidden smUp>
+        <Hidden mdUp>
             <IconButton color="inherit" onClick={props.onMenuClick}>
                 <Menu />
             </IconButton>
@@ -119,7 +125,7 @@ const RightMenu: React.StatelessFunctionalComponent<RightMenuProps> = withStyles
                 {props.userInfo.nickname ? props.userInfo.nickname[0] : 'U'}
             </Avatar>
         ) : (
-            <Hidden xsDown>
+            <Hidden smDown>
                 <Button
                     className={props.classes.outlineBtn}
                     onClick={() => props.goTo(URLS.login)}
@@ -152,6 +158,27 @@ const Logo: React.StatelessFunctionalComponent<LogoProp> = withStyles(styles)(
     )
 );
 
+type CategoryProps = {
+    classes?: Object,
+    goTo: Function,
+    categories: Array<string>,
+};
+
+const Category: React.StatelessFunctionalComponent<CategoryProps> = withStyles(styles)(
+    (props: Object) => (
+        <Flex>
+            {props.categories && props.categories.map((value, index) => (
+                <Button
+                    key={index}
+                    className={props.classes.uriBtn}
+                    onClick={() => props.goTo(URLS.category.concat('/', value))}>
+                {value}
+                </Button>
+            ))}
+        </Flex>
+    )
+);
+
 type P = {
     classes: Object,
     isLoading: ?boolean,
@@ -164,7 +191,7 @@ type P = {
 };
 
 type S = {
-    isLoading: bool,
+    isFetching: bool,
     showMenu: bool,
 };
 
@@ -172,16 +199,16 @@ class Navigation extends Component<P, S> {
     constructor() {
         super();
         this.state = {
-            isLoading: false,
+            isFetching: false,
             showMenu: false
         };
     }
 
     componentDidMount() {
         if(!this.props.categories || this.props.categories.length === 0) {
-            this.setState({isLoading: true});
+            this.setState({isFetching: true});
             NewsService.getCategories((isError: bool, data: Array<string>) => {
-                this.setState({isLoading: false});
+                this.setState({isFetching: false});
             });
         }
     }
@@ -191,6 +218,7 @@ class Navigation extends Component<P, S> {
     };
 
     goTo = (page: string) => {
+        this.toggleMenu();
         this.props.history.push(page);
     };
 
@@ -209,9 +237,16 @@ class Navigation extends Component<P, S> {
                             className={classes.navWrapper}
                             justify="space-between"
                         >
+                            <Flex>
                             <div>
                                 <Logo goTo={(page) => this.goTo(page)} />
                             </div>
+                            <Hidden smDown implementation='css'>
+                                <Category
+                                    categories={this.props.categories}
+                                    goTo={(page) => this.goTo(page)}/>
+                            </Hidden>
+                            </Flex>
                             <RightMenu
                                 userInfo={this.props.userInfo}
                                 goTo={(page) => this.goTo(page)}
@@ -221,7 +256,7 @@ class Navigation extends Component<P, S> {
                     </Toolbar>
                 </AppBar>
 
-                <Hidden smUp>
+                <Hidden mdUp>
                     <Drawer
                         anchor="top"
                         open={this.state.showMenu}
@@ -233,6 +268,7 @@ class Navigation extends Component<P, S> {
                         <Sidebar
                             goTo={this.goTo}
                             isAuthorized={AuthService.isAuthorized()}
+                            categories={this.props.categories}
                         />
                     </Drawer>
                 </Hidden>

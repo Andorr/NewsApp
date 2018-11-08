@@ -40,6 +40,15 @@ class NewsService {
         });
     }
 
+    // Get news by category
+    fetchNewsByCategory = (category: string, callback: Function) => {
+        const response = API.getNewsByCategory(category).response();
+        return response.then((data: Object) => {
+            !callback || callback(response.isError, data);
+            return data;
+        });
+    }
+
     // Creates a news item
     createNewsItem = (item: Object, callback: Function) => {
         const response = API.createNews(item).response();

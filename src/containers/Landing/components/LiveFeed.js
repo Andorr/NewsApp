@@ -7,7 +7,6 @@ import URLS from '../../../URLS';
 
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
 // Project Components
 import Flex from '../../../components/layout/Flex';
@@ -44,6 +43,7 @@ const styles: Object = {
 
         '&:hover': {
             textDecoration: 'underline',
+            color: 'black',
         }
     },
     itemTitle: {
@@ -95,8 +95,7 @@ const settings = {
     slidesToScroll: 1,
     slidesToShow: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
-    customPaging: i => <Button>{i + 1}</Button>
+    autoplaySpeed: 4350,
 }
 
 class LiveFeed extends React.Component<P> {

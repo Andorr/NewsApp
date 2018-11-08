@@ -15,6 +15,7 @@ import Detail from './containers/Detail';
 import LogIn from './containers/LogIn';
 import Upload from './containers/Upload';
 import Profile from './containers/Profile';
+import Category from './containers/Category';
 
 // Service imports
 import AuthService from './store/services/AuthService';
@@ -64,6 +65,7 @@ class App extends Component {
           <MuiThemeProvider theme={base}>
             <Switch>
               <Route exact path={URLS.landing} component={Landing} />
+              <Route exact path={URLS.category.concat('/:category')} component={Category} />
               <Route exact path={URLS.detail.concat('/:id')} component={Detail} />
               <Route exact path={URLS.login} component={LogIn} />
               <PrivateRoute exact path={URLS.upload.concat('/:id?')} component={Upload} />

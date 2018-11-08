@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
                 if(index !== -1) {
                     news[newsId].comments[index] = action.payload;
                 } else {
-                    news[newsId].comments.push(action.payload);
+                    news[newsId].comments.unshift(action.payload);
                 }
                 return {...state, news: news};
             } else {
@@ -84,5 +84,7 @@ export const getNews = (state) => Object.values(getNewsReducer(state).news);
 export const getNewsById = (id) => (state) => getNewsReducer(state).news[id];
 
 export const getCategories = (state) => getNewsReducer(state).categories;
+
+export const getNewsByCategory = (category) => (state) => getNews(state).filter(n => n.category === category);
 
 export default reducer;
