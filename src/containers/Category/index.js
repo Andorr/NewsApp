@@ -62,10 +62,11 @@ class Category extends React.Component<P, S> {
     }
 
     componentDidMount() {
+        window.scrollTo(0,0);
         this.fetchNewsByCategory();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: Object) {
         const category: string = this.props.match.params.category;
         const oldCategory: string = prevProps.match.params.category;
         if(category !== oldCategory) {

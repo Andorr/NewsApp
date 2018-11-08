@@ -184,7 +184,7 @@ class Upload extends Component<P, S> {
         if(inputFile) {
             // Extract to previewable file
             const reader: FileReader = new FileReader();
-            reader.onload = (e: ProgressEvent) => {
+            reader.onload = (e: any) => {
                 // Store files in state
                 this.setState({
                     uploadedImage: inputFile,

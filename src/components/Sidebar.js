@@ -21,7 +21,6 @@ const styles: Function = (theme) => ({
     root: {
         zIndex: 1600,
         paddingTop: 56,
-
         '@media only screen and (min-width: 600px)': {
             paddingTop: 64,
         }
@@ -32,6 +31,11 @@ const styles: Function = (theme) => ({
         color: 'white',
         width: '100%',
         borderBottom: '1px solid rgba(0,0,0,0.1)',
+    },
+    grid: {
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
     },
     small: {
         minHeight: 48,
@@ -70,14 +74,16 @@ const Sidebar: React.StatelessFunctionalComponent<P> = (props: Object) => {
     const {classes} = props;
     return (
         <List className={classes.root}>
-            {props.categories && props.categories.map((value, index) => (
-                <URLButton
-                    key={index}
-                    url={URLS.category.concat('/', value)}
-                    label={capitalize(value)}
-                    goTo={props.goTo}
-                    small/>
-            ))}
+            <div className={classes.grid}>
+                {props.categories && props.categories.map((value, index) => (
+                    <URLButton
+                        key={index}
+                        url={URLS.category.concat('/', value)}
+                        label={capitalize(value)}
+                        goTo={props.goTo}
+                        small/>
+                ))}
+            </div>
             <URLButton url={URLS.upload} label='Ny nyhet' goTo={props.goTo} icon={<Create />}/>
             {!props.isAuthorized && <URLButton url={URLS.login} label='Login' goTo={props.goTo} icon={<Person />}/>}
         </List>
