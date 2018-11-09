@@ -4,6 +4,10 @@ import {withStyles} from '@material-ui/core/styles';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
 import URLS from '../../../URLS';
+import {connect} from 'react-redux';
+
+// Selector imports 
+import * as NewsSelector from '../../../store/reducers/NewsReducer';
 
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
@@ -16,16 +20,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-type P = {
-    classes: Object,
-    data: Array<Object>,
-}
-
 const styles: Object = {
     root: {
         height: 'auto',
         backgroundColor: 'white',
-        overflowX: 'hidden',
+        overflow: 'hidden',
+        maxHeight: 120,
         boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.1)',
     },
     wrapper: {
@@ -99,10 +99,17 @@ const settings = {
     autoplaySpeed: 4350,
 }
 
+
+type P = {
+    classes: Object,
+    news: Array<Object>,
+}
+
 class LiveFeed extends React.Component<P> {
 
     render() {
-        const {classes, data} = this.props;
+        const {classes} = this.props;
+        const data = this.props.news || [];
         return (
             <div className={classes.root}>
                 <div className={classes.wrapper}>
@@ -123,4 +130,8 @@ class LiveFeed extends React.Component<P> {
     }
 }
 
-export default withStyles(styles)(LiveFeed);
+const mapStoreToProps: Function = (state: Object) => ({
+    news: NewsSelector.getNewest(state),
+})
+
+export default connect(mapStoreToProps)(withStyles(styles)(LiveFeed));

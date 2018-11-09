@@ -77,21 +77,14 @@ class Category extends React.Component<P, S> {
 
     fetchNewsByCategory = async () => {
         const category: string = this.props.match.params.category;
-        let news = this.props.getNewsByCategory(category) || [];
-
-        if(news.length === 0) {
-            this.setState({isLoading: true});
-            await NewsService.fetchNewsByCategory(category, (isError: bool, data: Array<Object>) => {
-                if(isError === false) {
-                    this.props.setNews(data);
-                    news = this.props.getNewsByCategory(category) || [];
-                    this.setState({news: news});
-                }
-            });
-        } else {
-            this.setState({news: news});
-        }
-        this.setState({isLoading: false});
+        await NewsService.fetchNewsByCategory(category, (isError: bool, data: Array<Object>) => {
+            if(isError === false) {
+                this.props.setNews(data);
+                const news = this.props.getNewsByCategory(category) || [];
+                this.setState({news: news});
+            }
+            this.setState({isLoading: false});
+        });
     }
 
     render() {

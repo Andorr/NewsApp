@@ -47,11 +47,6 @@ const styles = (theme) => ({
         '@media only screen and (max-width: 600px)': {
             marginTop: 56
         },
-        position: 'relative',
-    },
-    progress: {
-        position: 'absolute',
-        bottom: '-5px', left: 0, right: 0,
     },
     navContent: {
         width: '100%'

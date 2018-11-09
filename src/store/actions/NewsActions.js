@@ -43,5 +43,6 @@ const createNewsItem = (data) => ({
     id: data._id,
     voteCount: data.vote_count,
     commentCount: (data.comments)? data.comments.length : 0,
+    created_at: data.created_at || '',
     ...data,
 });

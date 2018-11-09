@@ -10,7 +10,7 @@ class NewsService {
     // Fetch news
     fetchNews = (callback: Function) => {
         const response = API.getNews().response();
-        return response.then((data: Object) => {
+        return response.then((data: Array<Object>) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItems(data)); // Add to store
             }
@@ -31,10 +31,20 @@ class NewsService {
         });
     }
 
+    fetchNewsWithParams = (params: Object, callback: Function) => {
+        const response = API.getNewsWithParams(params).response();
+        response.then((data: Array<Object>) => {
+            if(response.isError === false) {
+                store.dispatch(NewsActions.setNewsItems(data));
+            }
+            !callback || callback(response.isError, data);
+        });
+    }
+
     // Get news created by user
     fetchNewsByUser = (userId: string, callback: Function) => {
         const response = API.getNewsByUser(userId).response();
-        return response.then((data: Object) => {
+        return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
             return data;
         });
@@ -43,7 +53,7 @@ class NewsService {
     // Get news by category
     fetchNewsByCategory = (category: string, callback: Function) => {
         const response = API.getNewsByCategory(category).response();
-        return response.then((data: Object) => {
+        return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
             return data;
         });

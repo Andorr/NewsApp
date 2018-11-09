@@ -51,28 +51,29 @@ class Landing extends Component {
 
     fetchData = async () => {
         // Fetch news items
-        await NewsService.fetchNews();
+        await NewsService.fetchNewsWithParams({importance: 1});
         await NewsService.getCategories();
         this.setState({isLoading: false});
     }
 
     render() {
         const {classes, news} = this.props;
-        const header = news && news.length > 0 ? news[0] : {};
+        const header = news && news.length > 0 ? news[0] : null;
         const data = mergeElements(6, news, 1);
 
         return (
             <Navigation isLoading={this.state.isLoading} noRenderAtLoad whitesmoke>
-                <LiveFeed data={news}/>
+                <LiveFeed />
                 <div className={classes.root}>
                     <div className={classes.top}>
-                        <NewsItem
+                        {header && <NewsItem
                             to={URLS.detail.concat('/', header.id)}
                             image={header.image}
                             title={header.title}
                             subtitle={header.subtitle}
                             large
                             highlight='SISTE'/>
+                        }
                     </div>
                     {data.length > 0 && 
                         data.map((value, i) => (
@@ -90,7 +91,7 @@ Landing.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    news: NewsSelectors.getNews(state),
+    news: NewsSelectors.getNewsByImportance(1)(state),
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(Landing));
