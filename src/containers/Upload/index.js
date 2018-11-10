@@ -129,10 +129,10 @@ class Upload extends Component<P, S> {
     }
 
     fetchNewsData = async () => {
-        await NewsService.getCategories((isError: bool, categories: Array<string>) => {
+        await NewsService.getCategories(async (isError: bool, categories: Array<string>) => {
             if(categories && categories.length > 0) {
                 category = categories.map((value) => ({value: value, name: value.charAt(0).toUpperCase() + value.slice(1)}));
-                this.setState({category: category[0].value});
+                await this.setState({category: category[0].value});
             }
         });
 
@@ -158,7 +158,7 @@ class Upload extends Component<P, S> {
                     title: news.title,
                     subtitle: news.subtitle,
                     content: news.content,
-                    category: news.category || '',
+                    category: news.category || 0,
                     importance: news.importance || 0,
                     imageLink: news.image,
                     isEditing: true,

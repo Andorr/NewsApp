@@ -103,7 +103,7 @@ export const getNewsByImportance = (importance: number) => (state: Object) =>
 export const getCategories = (state: Object) =>
     getNewsState(state).categories;
 
-export const getNewest = (state: Object) => getNews(state).sort((a: Object, b: Object) => a.created_at.localeCompare(b.created_at));
+export const getNewest = (state: Object) => getNews(state).sort((a: Object, b: Object) => a.created_at.localeCompare(b.created_at)).slice(0, 200);
 
 export const getNewsByCategory = (category: string) => (state: Object) =>
     getNews(state).filter((n: Object) => n.category === category);
