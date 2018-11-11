@@ -4,10 +4,6 @@ import {withStyles} from '@material-ui/core/styles';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
 import URLS from '../../../URLS';
-import {connect} from 'react-redux';
-
-// Selector imports 
-import * as NewsSelector from '../../../store/reducers/NewsReducer';
 
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
@@ -102,21 +98,39 @@ const settings = {
 
 type P = {
     classes: Object,
-    news: Array<Object>,
+    data: Array<Object>,
 }
 
 class LiveFeed extends React.Component<P> {
 
+    slider: Slider;
+
+    constructor() {
+        super();
+        this.slider = React.createRef();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.data !== nextProps.data;
+    }
+
+    componentDidUpdate() {
+        if(this.slider.current && this.slider.current.slickGoTo) {
+            this.slider.current.slickGoTo(0, false);
+        }
+    }
+
+
     render() {
         const {classes} = this.props;
-        const data = this.props.news || [];
+        const data = this.props.data || [];
         return (
             <div className={classes.root}>
                 <div className={classes.wrapper}>
-                    <Slider {...settings}>
+                    <Slider {...settings} ref={this.slider}>
                         {data && data.map((value, i) => (
                             <FeedItem
-                                key={i}
+                                key={value.id}
                                 to={URLS.detail.concat('/', value.id)}
                                 className={classes.item}
                                 title={value.title}
@@ -130,8 +144,8 @@ class LiveFeed extends React.Component<P> {
     }
 }
 
-const mapStoreToProps: Function = (state: Object) => ({
-    news: NewsSelector.getNewest(state),
-})
+/* const mapStoreToProps: Function = (state: Object) => ({
+    news: NewsSelector.get(state),
+}) */
 
-export default connect(mapStoreToProps)(withStyles(styles)(LiveFeed));
+export default withStyles(styles)(LiveFeed);

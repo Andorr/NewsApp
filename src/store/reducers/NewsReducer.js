@@ -1,5 +1,6 @@
 import { actions } from '../actions/NewsActions';
 import { keyBy, merge } from 'lodash';
+import moment from 'moment';
 
 const initialState = {
     news: {}, // News by id
@@ -19,12 +20,21 @@ const reducer = (state = initialState, action) => {
         case actions.SET_NEWS_ITEM: {
             // Store or overwrite existing news item by id
 
-            const news = Object.assign({}, state.news);
-            const newsItem = action.payload;
+            const news: Object = Object.assign({}, state.news);
+            const newsItem: Object = action.payload;
             if (newsItem.id) {
                 news[newsItem.id] = newsItem; // Set news item
             }
             return { ...state, news: news };
+        }
+
+        case actions.DELETE_NEWS_ITEM: {
+            const news: Object = Object.assign({}, state.news);
+            const id: string = action.payload;
+            if(news[id]) {
+                delete news[id];
+            }
+            return {...state, news: news};
         }
 
         case actions.SET_COMMENT_ITEM: {
@@ -95,15 +105,15 @@ export const getNews = (state: Object) =>
 export const getNewsById = (id: string) => (state: Object) =>
     getNewsState(state).news[id];
 
-export const getNewsByImportance = (importance: number) => (state: Object) =>
-    getNews(state).filter(
-        (n: Object) => n.importance === importance
-    );
-
 export const getCategories = (state: Object) =>
     getNewsState(state).categories;
 
-export const getNewest = (state: Object) => getNews(state).sort((a: Object, b: Object) => a.created_at.localeCompare(b.created_at)).slice(0, 200);
+export const getNewest = (state: Object) => getNews(state).sort((a: Object, b: Object) => moment(a.created_at).diff(b.created_at)).slice(0, 5);
+
+export const getNewsByImportance = (importance: number) => (state: Object) =>
+    getNews(state).filter(
+        (n: Object) => n.importance === importance
+    ).sort((a: Object, b: Object) => -moment(a.created_at).diff(b.created_at));
 
 export const getNewsByCategory = (category: string) => (state: Object) =>
     getNews(state).filter((n: Object) => n.category === category);

@@ -4,6 +4,7 @@ export const actions = {
     SET_COMMENT_ITEM: 'SET_COMMENT_ITEM',
     DELETE_COMMENT_ITEM: 'DELETE_COMMENT_ITEM',
     SET_CATEGORIES: 'SET_CATEGORIES',
+    DELETE_NEWS_ITEM: 'DELETE_NEWS_ITEM',
 };
 
 
@@ -24,6 +25,14 @@ export const setNewsItem = (data: Object) => (
         }
     }
 );
+
+export const deleteNewsItem = (id: string) => (
+    (dispatch) => {
+        if(typeof id === 'string') {
+            dispatch({type: actions.DELETE_NEWS_ITEM, payload: id});
+        }
+    }
+)
 
 // Set comment
 export const setComment = (newsId: string, comment: Object) =>

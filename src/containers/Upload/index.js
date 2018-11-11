@@ -83,6 +83,7 @@ type P = {
     match: Match,
     getNewsById: Function,
     setNewsItem: Function,
+    deleteNewsItem: Function,
     userInfo: Object,
 }
 
@@ -158,7 +159,7 @@ class Upload extends Component<P, S> {
                     title: news.title,
                     subtitle: news.subtitle,
                     content: news.content,
-                    category: news.category || 0,
+                    category: news.category || 'other',
                     importance: news.importance || 0,
                     imageLink: news.image,
                     isEditing: true,
@@ -284,6 +285,7 @@ class Upload extends Component<P, S> {
         const id: string = this.props.match.params.id;
         NewsService.deleteNewsItem(id, (err: bool, data: Object) => {
             if(!err) {
+                this.props.deleteNewsItem(id);
                 this.props.history.push(URLS.profile);
             } else {
                 this.setState({isLoading: false});
@@ -406,6 +408,7 @@ const mapStateToProps = (state: Object) => ({
 
 const mapDispatchToProps = (dispatch: Function) => ({
     setNewsItem: (data: Object) => dispatch(NewsActions.setNewsItem(data)),
+    deleteNewsItem: (id: string) => dispatch(NewsActions.deleteNewsItem(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Upload));
