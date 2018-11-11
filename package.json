@@ -21,8 +21,7 @@
     "redux-thunk": "^2.3.0",
     "remark-breaks": "^1.0.1",
     "slick-carousel": "^1.8.1",
-    "universal-cookie": "^3.0.4",
-    "ws": "^6.1.0"
+    "universal-cookie": "^3.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

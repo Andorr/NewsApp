@@ -31,7 +31,7 @@ const styles: Object = {
             padding: '0 4px 16px 4px',
         },
     },
-    item1: {gridArea: 'a', order: 0, '@media only screen and (max-width: 600px)': {gridArea: 'unset'}},
+    item1: {gridArea: 'a', order: 0,'@media only screen and (max-width: 600px)': {gridArea: 'unset'}},
     item2: {gridArea: 'b', order: 1,'@media only screen and (max-width: 600px)': {gridArea: 'unset'}},
     item3: {gridArea: 'c', order: 2,'@media only screen and (max-width: 600px)': {gridArea: 'unset'}},
     item4: {gridArea: 'd', order: 3,'@media only screen and (max-width: 600px)': {gridArea: 'unset'}},

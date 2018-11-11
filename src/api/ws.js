@@ -1,4 +1,4 @@
-const WS_URL: string = 'ws://localhost:8080'; //'wss://sys-ut-news-api.herokuapp.com';
+const WS_URL: string = 'wss://sys-ut-news-api.herokuapp.com'; //'ws://localhost:8080'; //'wss://sys-ut-news-api.herokuapp.com';
 const ws = new WebSocket(WS_URL, ["protocolOne", "protocolTwo"]);
 
 const PING: string = 'ping';
