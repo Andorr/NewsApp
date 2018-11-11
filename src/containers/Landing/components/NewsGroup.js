@@ -24,10 +24,10 @@ const styles: Object = {
         gridGap: '16px',
         marginBottom: 12,
 
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '100%',
             gridTemplateAreas: 'unset',
-            gridTemplateRows: 'repeat(4, auto)',
+            gridTemplateRows: 'repeat(5, auto)',
             padding: '0 4px 16px 4px',
         },
     },

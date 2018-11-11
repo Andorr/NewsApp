@@ -8,7 +8,6 @@ ws.onopen = () => {
 
     // Start sending ping every 15 seconds
     const pingInterval: IntervalID = setInterval(() => {
-        console.log("Sending PING");
         if(ws.readyState === ws.OPEN) {
             ws.send(JSON.stringify({type: PING}));
         } else {

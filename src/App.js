@@ -40,16 +40,15 @@ class App extends Component {
 
   componentDidMount() {
     // On news recieved from websocket...
-    ws.onmessage((event: Object) => {
-      const data: Object = JSON.parse(event.data);
-      
-      if(data === 'ping') {
+    ws.onmessage = (event: any) => {
+      if(event.data === 'ping') {
         return;
       }
+      const data: Object = JSON.parse(event.data);
       console.log(data);
       // ...store it
       store.dispatch(NewsActions.setNewsItem(data));
-    });
+    };
 
     // Send userId to websocket-server
     if(AuthService.isAuthorized()) {

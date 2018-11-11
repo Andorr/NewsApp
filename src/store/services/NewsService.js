@@ -33,7 +33,7 @@ class NewsService {
 
     fetchNewsWithParams = (params: Object, callback: Function) => {
         const response = API.getNewsWithParams(params).response();
-        response.then((data: Array<Object>) => {
+        return response.then((data: Array<Object>) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItems(data));
             }
