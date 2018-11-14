@@ -77,7 +77,7 @@ const getRequest = (method, url, headers) => {
 
 export const formRequest = (method, url, headers, data) => {
     // Set data
-    let formData = new FormData();
+    let formData: FormData = new FormData();
     for (let key in data) {
         formData.append(key, data[key]);
     }
