@@ -8,7 +8,7 @@ import * as NewsActions from '../actions/NewsActions';
 class NewsService {
 
     // Fetch news
-    fetchNews = (callback: Function) => {
+    fetchNews = (callback: Function): Promise<Array<Object>> => {
         const response = API.getNews().response();
         return response.then((data: Array<Object>) => {
             if(response.isError === false) {
@@ -20,7 +20,7 @@ class NewsService {
     }
 
     // Gets a specific news item based on id
-    fetchNewsItem = (id: string, callback: Function) => {
+    fetchNewsItem = (id: string, callback: Function): Promise<Object> => {
         const response = API.getNewsById(id).response();
         return response.then((data: Object) => {
             if(response.isError === false) {
@@ -31,7 +31,7 @@ class NewsService {
         });
     }
 
-    fetchNewsWithParams = (params: Object, callback: Function) => {
+    fetchNewsWithParams = (params: Object, callback: Function): Promise<Array<Object>> => {
         const response = API.getNewsWithParams(params).response();
         return response.then((data: Array<Object>) => {
             if(response.isError === false) {
@@ -42,7 +42,7 @@ class NewsService {
     }
 
     // Get news created by user
-    fetchNewsByUser = (userId: string, callback: Function) => {
+    fetchNewsByUser = (userId: string, callback: Function): Promise<Array<Object>> => {
         const response = API.getNewsByUser(userId).response();
         return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
@@ -51,7 +51,7 @@ class NewsService {
     }
 
     // Get news by category
-    fetchNewsByCategory = (category: string, callback: Function) => {
+    fetchNewsByCategory = (category: string, callback: Function): Promise<Array<Object>> => {
         const response = API.getNewsByCategory(category).response();
         return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
@@ -60,7 +60,7 @@ class NewsService {
     }
 
     // Creates a news item
-    createNewsItem = (item: Object, callback: Function) => {
+    createNewsItem = (item: Object, callback: Function): Promise<Object> => {
         const response = API.createNews(item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -69,7 +69,7 @@ class NewsService {
     }
 
     // Create a news item with file upload
-    createNewsItemWithFile = (item: Object, callback: Function) => {
+    createNewsItemWithFile = (item: Object, callback: Function): Promise<Object> => {
         const response = API.createNewsWithFile(item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -78,7 +78,7 @@ class NewsService {
     }
 
     // Update a news item
-    updateNewsItem = (id: string, item: Object, callback: Function) => {
+    updateNewsItem = (id: string, item: Object, callback: Function): Promise<Object> => {
         const response = API.updateNews(id, item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -87,7 +87,7 @@ class NewsService {
     }
 
     // Update a news item with file upload
-    updateNewsItemWithFile = (id: string, item: Object, callback: Function) => {
+    updateNewsItemWithFile = (id: string, item: Object, callback: Function): Promise<Object> => {
         const response = API.updateNewsWithFile(id, item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -96,7 +96,7 @@ class NewsService {
     }
 
     // Delete a news item
-    deleteNewsItem = (id: string, callback: Function) => {
+    deleteNewsItem = (id: string, callback: Function): Promise<Object> => {
         const response = API.deleteNews(id).response();
         return response.then((isError, data) => {
             !callback || callback(response.isError, data);
@@ -105,7 +105,7 @@ class NewsService {
     }
 
     // Comments on a news item
-    createComment = (id: string, comment: string, callback: Function) => {
+    createComment = (id: string, comment: string, callback: Function): Promise<Object> => {
         const dataItem: Object = {news: id, comment: comment};
 
         const response = API.createNewsComment(dataItem).response();
@@ -116,7 +116,7 @@ class NewsService {
     }
 
     // Delete comment
-    deleteComment = (newsId: string, commentId: string, callback: Function) => {
+    deleteComment = (newsId: string, commentId: string, callback: Function): Promise<Object> => {
         const response = API.deleteNewsComment(newsId, commentId).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -125,16 +125,16 @@ class NewsService {
     }
 
     // Update comment
-    updateComment = (newsId: string, commentId: string, comment: string, callback: Function) => {
+    updateComment = (newsId: string, commentId: string, comment: string, callback: Function): Promise<Object> => {
         const response = API.updateNewsComment(newsId, commentId, comment).response();
-        response.then((data: Object) => {
+        return response.then((data: Object) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Like a post
-    onLikePost = (id: string, callback: Function) => {
+    onLikePost = (id: string, callback: Function): Promise<Object> => {
         const response = API.voteNews(id).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -143,10 +143,10 @@ class NewsService {
     }
 
     // Get categories
-    getCategories = (callback: Function) => {
+    getCategories = (callback: Function): Promise<Array<string>> => {
         const response = API.getCategories().response();
-        response.then((data) => {
-            const categories: Array<string> = data.categories;
+        return response.then((data: Object) => {
+            const categories: Array<string> = data.categories || [];
             store.dispatch(NewsActions.setCategories(categories));
             !callback || callback(response.isError, categories);
             return categories;

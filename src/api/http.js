@@ -1,12 +1,19 @@
+// @flow
 import Cookies from 'universal-cookie';
 
-export const BASE = 'https://sys-ut-news-api.herokuapp.com/'; //'http://localhost:8080/'; //''; // ;
-const TOKEN_HEADER_NAME = 'Authorization';
-const TOKEN_COOKIE_ID = 'access_token';
-const cookies = new Cookies();
+export const BASE: string = 'https://sys-ut-news-api.herokuapp.com/'; //'http://localhost:8080/'; //''; // ;
+const TOKEN_HEADER_NAME: string = 'Authorization';
+const TOKEN_COOKIE_ID: string = 'access_token';
+const cookies: Cookies = new Cookies();
 
 export class IRequest {
-    constructor(method: string, url: string, data: Object={}, args: Object={}, withAuth: bool=true) {
+
+    method: string;
+    data: ?Object;
+    headers: Object;
+    url: string;
+
+    constructor(method: string, url: string, data: ?Object={}, args: ?Object={}, withAuth: bool=true) {
         this.method = method;
         this.data = data;
         this.headers = {'Content-Type': 'application/json'};
@@ -21,9 +28,9 @@ export class IRequest {
         }
     }
 
-    response() {
+    response(): IResponse {
         if (this.method === 'GET') {
-            return new IResponse(getRequest(this.method, this.url, this.headers, this.data));
+            return new IResponse(getRequest(this.method, this.url, this.headers));
         }
         else if (this.method === 'POST_FILE') {
             return new IResponse(formRequest('POST', this.url, this.headers, this.data));
@@ -38,7 +45,11 @@ export class IRequest {
 }
 
 class IResponse {
-    constructor(response) {
+    response: Promise<any>;
+    isError: bool;
+    status: number;
+
+    constructor(response: Promise<any>) {
         this.response = response.then((data) => {
             if (!data) {
                 data = {};
@@ -51,12 +62,12 @@ class IResponse {
         }).catch((error) => console.log(error));
     }
 
-    then(method) {
+    then(method: Function) {
         return this.response.then(method);
     }
 }
 
-const request = (method, url, headers, data) => {
+const request = (method: string, url: string, headers: Object, data: ?Object): Promise<any> => {
     return fetch(url, {
         method: method,
         headers: headers,
@@ -65,7 +76,7 @@ const request = (method, url, headers, data) => {
     .catch((error) => console.log(error));
 };
 
-const getRequest = (method, url, headers) => {
+const getRequest = (method: string, url: string, headers: Object): Promise<any> => {
     return fetch(url, {
         method: method,
         headers: headers,
@@ -75,7 +86,7 @@ const getRequest = (method, url, headers) => {
 
 
 
-export const formRequest = (method, url, headers, data) => {
+export const formRequest = (method: string, url: string, headers: Object, data: ?Object): Promise<any> => {
     // Set data
     let formData: FormData = new FormData();
     for (let key in data) {
@@ -95,17 +106,17 @@ export const formRequest = (method, url, headers, data) => {
 
 
 export class Token {
-    set(token, expires_in=3600) {
+    set(token: string, expires_in: number =3600): void {
         cookies.set(TOKEN_COOKIE_ID, token, {path: '/', expires: new Date(Date.now() + expires_in*1000)});
     }
 
-    get() {
+    get(): string {
         return cookies.get(TOKEN_COOKIE_ID);
     }
 
-    remove() {
+    remove(): void {
         cookies.remove(TOKEN_COOKIE_ID, {path: '/'});
     }
 }
 
-export const TOKEN = new Token();
+export const TOKEN: Token = new Token();
