@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing TextEditor [TextEditor] Testing render 1`] = `
+<TextEditor
+  classes={
+    Object {
+      "emptySpace": "TextEditor-emptySpace-7",
+      "iconBtn": "TextEditor-iconBtn-6",
+      "input": "TextEditor-input-2",
+      "preview": "TextEditor-preview-4",
+      "root": "TextEditor-root-1",
+      "textBtn": "TextEditor-textBtn-5",
+      "toolbox": "TextEditor-toolbox-3",
+    }
+  }
+/>
+`;

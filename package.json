@@ -2,10 +2,16 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
+  },
   "dependencies": {
     "@material-ui/core": "^3.1.0",
     "@material-ui/icons": "^3.0.1",
     "classnames": "^2.2.6",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "enzyme-to-json": "^3.3.4",
     "flow-bin": "^0.84.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",

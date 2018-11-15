@@ -50,7 +50,7 @@ class App extends Component {
       store.dispatch(NewsActions.setNewsItem(data));
     };
 
-    // Send userId to websocket-server
+    // Fetch user info if logged in
     if(AuthService.isAuthorized()) {
       AuthService.fetchUserInfo();
     }

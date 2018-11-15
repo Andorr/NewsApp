@@ -11,17 +11,7 @@ import Paper from '@material-ui/core/Paper';
 // Project Components
 import Pulse from '../components/Pulse';
 
-type P = {
-    classes: Object,
-    className: string,
-    image?: string,
-    title?: string,
-    subtitle?: string,
-    large: boolean,
-    to: string,
 
-    highlight: ?string,
-}
 
 const styles: Object = {
     root: {
@@ -66,6 +56,18 @@ const styles: Object = {
         height: 'auto',
         right: 30,
     }
+}
+
+type P = {
+    classes: Object,
+    className: string,
+    image?: string,
+    title?: string,
+    subtitle?: string,
+    large?: boolean,
+    to: string,
+
+    highlight: ?string,
 }
 
 class NewsItem extends Component<P> {

@@ -65,7 +65,7 @@ type ToolbarProps = {
     children: any,
 };
 
-const ToolbarAction: React.StatelessFunctionalComponent<ToolbarProps> = withStyles(styles)((props) => {
+export const ToolbarAction: React.StatelessFunctionalComponent<ToolbarProps> = withStyles(styles)((props) => {
     const {classes, children} = props;
     return (
         <IconButton className={classes.iconBtn} onClick={props.onClick}>

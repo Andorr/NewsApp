@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flex component [Flex] Testing render 1`] = `
+<Flex
+  classes={
+    Object {
+      "root": "Flex-root-1",
+    }
+  }
+/>
+`;

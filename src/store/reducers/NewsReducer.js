@@ -21,7 +21,7 @@ const reducer = (state = initialState, action) => {
             // Store or overwrite existing news item by id
 
             const news: Object = Object.assign({}, state.news);
-            const newsItem: Object = action.payload;
+            const newsItem: Object = action.payload || {};
             if (newsItem.id) {
                 news[newsItem.id] = newsItem; // Set news item
             }
@@ -45,7 +45,7 @@ const reducer = (state = initialState, action) => {
             // Find the news item exists
             if (news[newsId]) {
                 // Find index of comment
-                const commentId = action.payload._id;
+                const commentId = action.payload._id || action.payload.id;
                 const index = news[newsId].comments.findIndex(
                     (c) => c._id === commentId
                 );

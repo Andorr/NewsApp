@@ -25,7 +25,7 @@ const List: React.StatelessFunctionalComponent<P> = (props: Object) => {
         <Flex className={props.className} dir='column'>
             {props.children}
         </Flex>
-    )
+    );
 }
 
 export default (List);
