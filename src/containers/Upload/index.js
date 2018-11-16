@@ -168,7 +168,7 @@ class Upload extends Component<P, S> {
         }
     }
 
-    handleChange = (name: string, isValue: bool = false) => (event: Object) => {
+    handleChange = (name: string, isValue: bool = false) => (event: SyntheticInputEvent<HTMLInputElement>) => {
         this.setState({[name]: (isValue) ? event : event.target.value});
     }
 

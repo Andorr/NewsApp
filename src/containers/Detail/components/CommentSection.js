@@ -22,6 +22,7 @@ const styles: Object = {
     inputWrapper: {
         margin: '12px 0',
     },
+    mt: {marginTop: 10},
 }
 
 
@@ -121,7 +122,7 @@ class CommentSection extends Component<P,S> {
                     </Flex>
                 </form>
                 :
-                <Typography variant='body2'>You need to login to create a comment</Typography>
+                <Typography className={classes.mt} variant='body2' gutterBottom>You need to login to create a comment</Typography>
                 }
                 <List>
                     {comments.map((value, index) => (

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flex component [Flex] Testing render 1`] = `
+<NewsItem
+  classes={
+    Object {
+      "image": "NewsItem-image-2",
+      "imageWrapper": "NewsItem-imageWrapper-4",
+      "large": "NewsItem-large-3",
+      "lgText": "NewsItem-lgText-7",
+      "pulse": "NewsItem-pulse-8",
+      "root": "NewsItem-root-1",
+      "text": "NewsItem-text-6",
+      "textWrapper": "NewsItem-textWrapper-5",
+    }
+  }
+/>
+`;
+
+exports[`NewsItem component [NewsItem] Testing render 1`] = `
+<NewsItem
+  classes={
+    Object {
+      "image": "NewsItem-image-2",
+      "imageWrapper": "NewsItem-imageWrapper-4",
+      "large": "NewsItem-large-3",
+      "lgText": "NewsItem-lgText-7",
+      "pulse": "NewsItem-pulse-8",
+      "root": "NewsItem-root-1",
+      "text": "NewsItem-text-6",
+      "textWrapper": "NewsItem-textWrapper-5",
+    }
+  }
+/>
+`;

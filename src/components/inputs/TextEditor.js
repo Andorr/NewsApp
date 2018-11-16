@@ -108,7 +108,7 @@ class TextEditor extends Component<P, S> {
         this.input = React.createRef();
     }
 
-    handleChange = (event: Object) => {
+    handleChange = (event: Object): void => {
         this.setState({text: event.target.value, cursorPos: this.input.selectionStart});
         if(this.props.onChange) {
             this.props.onChange(event.target.value);
@@ -119,7 +119,7 @@ class TextEditor extends Component<P, S> {
         this.setState({tabValue: value});
     }
 
-    appendTextAtCursor = (textToAppend: string) => {
+    appendTextAtCursor = (textToAppend: string): void => {
         const text = this.input.value;
         const cursorPos = this.input.selectionStart === 0 ? this.state.cursorPos : this.input.selectionStart;
         const newText = text.substring(0, cursorPos) + textToAppend + text.substring(cursorPos, text.length);
@@ -131,33 +131,33 @@ class TextEditor extends Component<P, S> {
         this.setSelectionStart(cursorPos + textToAppend.length);
     }
 
-    setSelectionStart = (position: number) => {
+    setSelectionStart = (position: number): void => {
         if (position < 0) {position = 0;}
         setTimeout(() => this.input.setSelectionRange(position, position), 0);
         this.setState({cursorPos: position});
         this.input.focus();
     }
 
-    appendBold = () => {
+    appendBold = (): void => {
         this.appendTextAtCursor('****');
         this.setSelectionStart(this.input.selectionStart + 2);
     }
 
-    appendItalic = () => {
+    appendItalic = (): void => {
         this.appendTextAtCursor('__');
         this.setSelectionStart(this.input.selectionStart + 1);
     }
 
-    appendStrike = () => {
+    appendStrike = (): void => {
         this.appendTextAtCursor('~~~~');
         this.setSelectionStart(this.input.selectionStart + 2);
     }
 
-    appendBulletPoint = (type: string) => () => {
+    appendBulletPoint = (type: string): Function => (): void => {
         this.appendTextAtCursor('\n'.concat(type, ' '));
     }
 
-    appendImage = () => {
+    appendImage = (): void => {
         this.appendTextAtCursor('![ALT_TEXT](IMAGE_URL)');
         this.setSelectionStart(this.input.selectionStart);
     }

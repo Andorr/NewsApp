@@ -75,8 +75,8 @@ class NewsItem extends Component<P> {
     render() {
         const {classes, className, image, title, subtitle} = this.props;
         return (
-            <Paper className={classNames(classes.root, className)} square elevation={1}>
-                <Link to={this.props.to} style={{textDecoration: 'none'}}>
+            <Paper className={classNames("hello", classes.root, className)} square elevation={1}>
+                <Link to={this.props.to || ''} style={{textDecoration: 'none'}}>
                     <div className={classes.imageWrapper}>
                         <img className={classNames(classes.image, this.props.large ? classes.large : '')} src={image} alt={title} />
                         {this.props.highlight && <Pulse className={classes.pulse} label={this.props.highlight}/>}

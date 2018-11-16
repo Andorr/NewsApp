@@ -19,12 +19,12 @@ ws.onopen = () => {
 
 //ws.oning(heartbeat);
 
-ws.onmessage = (event: MessageEvent) => {
+ws.onmessage = (event: MessageEvent): void => {
     console.log(event.data);
 };
 
 
-ws.sendAuth = (id: string) => {
+ws.sendAuth = (id: string): void => {
 
     // If not open, send message onOpen
     if(ws.readyState !== ws.OPEN) {
