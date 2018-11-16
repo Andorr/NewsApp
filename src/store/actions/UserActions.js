@@ -14,4 +14,5 @@ const createUserItem = (data) => ({
     id: data._id,
     email: data.email,
     nickname: data.nickname,
+    image: data.image,
 });

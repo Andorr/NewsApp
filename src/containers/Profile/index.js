@@ -44,6 +44,14 @@ const styles: Function = (theme) => ({
         maxHeight: 140,
         padding: '80px 12px 12px 12px',
         position: 'relative',
+        '@media only screen and (max-width: 800px)': {
+            order: 0,
+        }
+    },
+    content: {
+        '@media only screen and (max-width: 800px)': {
+            order: 1,
+        }
     },
     margin: {
         margin: 20,
@@ -121,7 +129,7 @@ class Profile extends Component<P, S> {
         return (
             <Navigation isLoading={this.state.isLoading}>
                 <div className={classes.root}>
-                    <div>
+                    <div className={classes.content}>
                         <Typography variant='display1' gutterBottom>Your articles</Typography>
                         <Divider />
 
@@ -145,7 +153,7 @@ class Profile extends Component<P, S> {
                         }
                     </div>
                     <Flex className={classes.details} dir='column'>
-                        <Avatar className={classes.avatar}>{firstLetter}</Avatar>
+                        <Avatar className={classes.avatar} src={userInfo.image}>{(userInfo.image)? null : firstLetter}</Avatar>
                         <Typography className={classes.gutter} variant='caption'>{userInfo.email}</Typography>
                         <Typography className={classes.gutter} variant='caption'>{userInfo.nickname}</Typography>
                         <Button className={classes.gutter} variant='contained' color='secondary' onClick={this.logout}>Log out</Button>

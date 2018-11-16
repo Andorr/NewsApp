@@ -47,6 +47,7 @@ type CommentProps = {
     comment?: string,
     author?: string,
     timePosted?: string,
+    isEdited: bool,
     isOwner: bool,
     onCommentDelete: Function,
     onCommentUpdate: Function,
@@ -95,9 +96,12 @@ class CommentItem extends Component<CommentProps, CommentState> {
                     </Flex>
                     <div className={classes.content} justify='space-between'>
                         {isEditing ?
-                            <TextField fullWidth value={this.state.comment} onChange={this.handleChange('comment')}/>
+                                <TextField fullWidth value={this.state.comment} onChange={this.handleChange('comment')}/>
                         :
-                            <Typography variant='body2'>{this.props.comment}</Typography>
+                            <div>
+                                <Typography variant='body2' gutterBottom>{this.props.comment}</Typography>
+                                {this.props.isEdited && <Typography variant='caption'>{'Edited'}</Typography>}
+                            </div>
                         }
                         <Flex className={classes.mt} justify='flex-end'>
                             {this.props.isOwner && <IconButton className={classes.iconBtn} onClick={this.toggleEdit}>

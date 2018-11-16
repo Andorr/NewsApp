@@ -132,6 +132,7 @@ class CommentSection extends Component<P,S> {
                             comment={value.comment}
                             author={value.user_nickname}
                             timePosted={value.created_at}
+                            isEdited={value.updated_at}
                             onCommentDelete={this.onCommentDelete(value._id)}
                             onCommentUpdate={this.onCommentUpdate}/>
                     ))}
