@@ -19,13 +19,13 @@ import IconButton from '@material-ui/core/IconButton';
 
 // Icons
 import Delete from '@material-ui/icons/Delete';
-import UploadIcon from '@material-ui/icons/CloudUpload';
 
 // Project Components
 import Navigation from '../../components/Navigation';
 import TextEditor from '../../components/inputs/TextEditor';
 import Flex from '../../components/layout/Flex';
 import Select from '../../components/inputs/Select';
+import FileInput from '../../components/inputs/FileInput';
 
 const styles: Object = (theme) => ({
     root: {
@@ -180,8 +180,8 @@ class Upload extends Component<P, S> {
     }
 
     handleFileUpload = (event: SyntheticInputEvent<HTMLInputElement>) => {
-        const inputFile = event.target.files[0];
-        
+        const inputFile: File = event.target.files[0];
+
         if(inputFile) {
             // Extract to previewable file
             const reader: FileReader = new FileReader();
@@ -338,19 +338,9 @@ class Upload extends Component<P, S> {
                                     onChange={this.handleChange('imageLink')}
                                     />
                                 
+                                
                                 <Flex>
-                                    <label htmlFor='button-input-file'>
-                                        <input
-                                            id='button-input-file'
-                                            type='file'
-                                            style={{display: 'none'}}
-                                            onChange={this.handleFileUpload}
-                                            accept='image/*'/>
-                                        <Button component='span' variant='raised' color='secondary'>
-                                            <UploadIcon className={classes.smr}/>
-                                            Upload Image 
-                                        </Button>
-                                    </label>
+                                    <FileInput onChange={this.handleFileUpload} />
                                     <IconButton
                                         onClick={this.deleteUploadedImages}
                                         disabled={this.state.uploadedImage === null}>

@@ -1,6 +1,6 @@
 // @flow
 
-import {AUTH} from '../../api/api';
+import API, {AUTH} from '../../api/api';
 import {TOKEN} from '../../api/http';
 import store from '../store';
 import ws from '../../api/ws';
@@ -44,6 +44,16 @@ class AuthService {
             }
             !callback || callback(response.isError === true, data);
             return data;
+        });
+    }
+
+    uploadProfileImage(image: File, callback: ?Function): Promise<Object> {
+        const response = API.uploadProfileImage({image: image}).response();
+        return response.then((data: Object) => {
+            if(response.isError === false) {
+                store.dispatch(UserActions.setUserInfo(data));
+            }
+            !callback || callback(response.isError === true, data);
         });
     }
 

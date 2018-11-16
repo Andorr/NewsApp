@@ -121,8 +121,11 @@ const RightMenu: React.StatelessFunctionalComponent<RightMenuProps> = withStyles
             <Avatar
                 className={props.classes.avatar}
                 onClick={() => props.goTo(URLS.profile)}
+                src={props.userInfo.image}
             >
-                {props.userInfo.nickname ? props.userInfo.nickname[0] : 'U'}
+                {props.userInfo.image ? null :
+                    props.userInfo.nickname ?
+                        props.userInfo.nickname[0].toUpperCase() : 'U'}
             </Avatar>
         ) : (
             <Hidden smDown>

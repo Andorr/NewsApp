@@ -87,6 +87,7 @@ const getRequest = (method: string, url: string, headers: Object): Promise<any> 
 
 
 export const formRequest = (method: string, url: string, headers: Object, data: ?Object): Promise<any> => {
+    
     // Set data
     let formData: FormData = new FormData();
     for (let key in data) {

@@ -1,4 +1,4 @@
-export const actions = {
+export const actions: Object = {
     SET_NEWS_ITEMS: 'SET_NEWS_ITEMS',
     SET_NEWS_ITEM: 'SET_NEWS_ITEM',
     SET_COMMENT_ITEM: 'SET_COMMENT_ITEM',
@@ -9,7 +9,7 @@ export const actions = {
 
 
 // Fills the news-state with given data
-export const setNewsItems = (data: Object) => (
+export const setNewsItems: Function = (data: Object) => (
     (dispatch) => {
         if(data instanceof Array) {
             dispatch({type: actions.SET_NEWS_ITEMS, payload: data.map(createNewsItem)})
@@ -18,7 +18,7 @@ export const setNewsItems = (data: Object) => (
 );
 
 // Sets an current item
-export const setNewsItem = (data: Object) => (
+export const setNewsItem: Function = (data: Object) => (
     (dispatch) => {
         if(data.constructor === Object) {
             dispatch({type: actions.SET_NEWS_ITEM, payload: createNewsItem(data)});
@@ -26,7 +26,7 @@ export const setNewsItem = (data: Object) => (
     }
 );
 
-export const deleteNewsItem = (id: string) => (
+export const deleteNewsItem: Function = (id: string) => (
     (dispatch) => {
         if(typeof id === 'string') {
             dispatch({type: actions.DELETE_NEWS_ITEM, payload: id});
@@ -35,14 +35,14 @@ export const deleteNewsItem = (id: string) => (
 )
 
 // Set comment
-export const setComment = (newsId: string, comment: Object) =>
+export const setComment: Function = (newsId: string, comment: Object) =>
     (dispatch) => dispatch({type: actions.SET_COMMENT_ITEM, payload: comment, id: newsId});
 
 // Delete comment
-export const deleteComment = (newsId: string, commentId: string) => 
+export const deleteComment: Function = (newsId: string, commentId: string) => 
     (dispatch) => dispatch({type: actions.DELETE_COMMENT_ITEM, payload: commentId, id: newsId});
 
-export const setCategories = (data: Array<string>) =>
+export const setCategories: Function = (data: Array<string>) =>
     (dispatch) => dispatch({type: actions.SET_CATEGORIES, payload: data});
 
 

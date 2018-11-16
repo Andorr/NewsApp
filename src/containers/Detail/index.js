@@ -221,7 +221,7 @@ class Detail extends Component<P, S> {
                                     <Typography variant='title'>{author.nickname || 'Anonym'}</Typography>
                                     <Typography variant='caption'>{author.email}</Typography>
                                 </Flex>
-                                <Avatar className={classes.ml}>A</Avatar>
+                                <Avatar className={classes.ml} src={author.image}>{author.image ? null : author.nickname? author.nickname[0] : 'A'}</Avatar>
                             </Flex>
                             <Flex justify='flex-end'>
                                 <Typography variant='caption'>Publisert: {published ? published.format('HH:mm DD.MM.YYYY') : ''}</Typography>

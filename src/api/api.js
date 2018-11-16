@@ -52,6 +52,11 @@ export default {
     getCategories: (): IRequest => {
         return new IRequest('GET', 'news/category', null, null, false);
     },
+
+    // Profile
+    uploadProfileImage: (data: Object): IRequest => {
+        return new IRequest('POST_FILE', 'account/avatar/', data);
+    },
 };
 
 export const AUTH = {

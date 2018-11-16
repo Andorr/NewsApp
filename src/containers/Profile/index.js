@@ -21,6 +21,7 @@ import Navigation from '../../components/Navigation';
 import List from '../../components/layout/List';
 import ArticleItem from './components/ArticleItem';
 import Flex from '../../components/layout/Flex';
+import FileInput from '../../components/inputs/FileInput';
 
 const styles: Function = (theme) => ({
     root: {
@@ -62,7 +63,8 @@ const styles: Function = (theme) => ({
         margin: 'auto',
         width: 148,
         height: 148,
-        border: '2px solid ' + theme.palette.secondary.main,
+        border: '3px solid ' + theme.palette.secondary.main,
+        cursor: 'pointer',
     },
     gutter: {
         marginTop: 16,
@@ -101,6 +103,7 @@ class Profile extends Component<P, S> {
         await AuthService.fetchUserInfo((isError: bool, data: Object) => {
 
         });
+        
         const id: string = this.props.userInfo ? this.props.userInfo.id : '';
         NewsService.fetchNewsByUser(id, (isError: bool, data: Array<Object>) => {
             if(isError === false) {
@@ -117,6 +120,17 @@ class Profile extends Component<P, S> {
 
     goTo = (page) => {
         this.props.history.push(page);
+    }
+
+    onImageChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const inputFile: File = event.target.files[0];
+        
+        if(inputFile) {
+            this.setState({isLoading: true});
+            AuthService.uploadProfileImage(inputFile, (isError: bool, user: Object) => {
+                this.setState({isLoading: false});
+            });
+        }
     }
 
     render() {
@@ -153,7 +167,10 @@ class Profile extends Component<P, S> {
                         }
                     </div>
                     <Flex className={classes.details} dir='column'>
-                        <Avatar className={classes.avatar} src={userInfo.image}>{(userInfo.image)? null : firstLetter}</Avatar>
+                        <FileInput id='profile-btn-upload' onChange={this.onImageChange}>
+                            <Avatar className={classes.avatar} src={userInfo.image}>{(userInfo.image)? null : firstLetter}</Avatar>
+                        </FileInput>
+                        
                         <Typography className={classes.gutter} variant='caption'>{userInfo.email}</Typography>
                         <Typography className={classes.gutter} variant='caption'>{userInfo.nickname}</Typography>
                         <Button className={classes.gutter} variant='contained' color='secondary' onClick={this.logout}>Log out</Button>
