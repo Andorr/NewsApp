@@ -1,1 +1,2 @@
 # NewsApp in React!
+Welcome!
