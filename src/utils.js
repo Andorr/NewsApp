@@ -1,3 +1,4 @@
+// @flow
 export const mergeElements: Function = (num: number, list: Array<Object>, start: number = 2) => {
     const arr = [];
     let from: number = start;

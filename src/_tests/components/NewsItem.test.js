@@ -12,7 +12,7 @@ describe('NewsItem component', () => {
     let mount: ShallowWrapper;
     
     beforeEach(() => {
-        shallow = createShallow();
+        shallow = createShallow(); // Necassary for Material-UI's "withStyles()"
         mount = createMount();
     });
 

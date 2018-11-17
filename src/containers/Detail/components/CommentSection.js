@@ -51,14 +51,14 @@ class CommentSection extends Component<P,S> {
         }
     }
 
-    handleChange = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
+    handleChange = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>): void => {
         this.setState({[name]: event.target.value});
     }
 
-    postComment = (event: SyntheticEvent<HTMLInputElement>) => {
+    postComment = (event: SyntheticEvent<HTMLInputElement>): void => {
         event.preventDefault();
 
-        const comment = this.state.comment;
+        const comment: string = this.state.comment;
 
         // Validate comment
         if(!comment || comment.length > 1000) {
@@ -72,7 +72,7 @@ class CommentSection extends Component<P,S> {
         }
     }
 
-    onCommentDelete = (id: string) => (event: SyntheticEvent<HTMLInputElement>) => {
+    onCommentDelete = (id: string) => (event: SyntheticEvent<HTMLInputElement>): void => {
         event.preventDefault();
 
         // Delete comment
@@ -81,7 +81,7 @@ class CommentSection extends Component<P,S> {
         }
     }
 
-    onCommentUpdate = (commentId: string, comment: string) => { 
+    onCommentUpdate = (commentId: string, comment: string): void => { 
        // Update comment
         if(this.props.onCommentUpdate) {
             this.props.onCommentUpdate(commentId, comment);
@@ -125,7 +125,7 @@ class CommentSection extends Component<P,S> {
                 <Typography className={classes.mt} variant='body2' gutterBottom>You need to login to create a comment</Typography>
                 }
                 <List>
-                    {comments.map((value, index) => (
+                    {comments.map((value: Object, index: number) => (
                         <CommentItem
                             key={value._id}
                             id={value._id}

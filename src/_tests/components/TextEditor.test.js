@@ -11,7 +11,7 @@ describe('Testing TextEditor', () => {
     let mount;
 
     beforeEach(() => {
-        shallow = createShallow();
+        shallow = createShallow(); // Necassary for Material-UI's "withStyles()"
         mount = createMount();
     });
 

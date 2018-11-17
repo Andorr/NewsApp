@@ -8,7 +8,7 @@ describe('Flex component', () => {
     let shallow: ReactWrapper;
     
     beforeEach(() => {
-        shallow = createShallow();
+        shallow = createShallow(); // Necassary for Material-UI's "withStyles()"
     });
 
     it('[Flex] Testing render', () => {
