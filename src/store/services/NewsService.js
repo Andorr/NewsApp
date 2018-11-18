@@ -38,6 +38,7 @@ class NewsService {
                 store.dispatch(NewsActions.setNewsItems(data));
             }
             !callback || callback(response.isError, data);
+            return data;
         });
     }
 

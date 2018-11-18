@@ -86,7 +86,7 @@ const FeedItem : React.StatelessFunctionalComponent<FeedProps> = withStyles(styl
     )
 });
 
-const settings = {
+const settings: Object = {
     infinite: true,
     speed: 500,
     slidesToScroll: 1,
@@ -110,11 +110,11 @@ class LiveFeed extends React.Component<P> {
         this.slider = React.createRef();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState): bool {
         return this.props.data !== nextProps.data;
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         if(this.slider.current && this.slider.current.slickGoTo) {
             this.slider.current.slickGoTo(0, false);
         }
@@ -143,9 +143,5 @@ class LiveFeed extends React.Component<P> {
         )
     }
 }
-
-/* const mapStoreToProps: Function = (state: Object) => ({
-    news: NewsSelector.get(state),
-}) */
 
 export default withStyles(styles)(LiveFeed);

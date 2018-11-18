@@ -16,7 +16,7 @@ export default {
         return new IRequest('GET', 'news/?category='.concat(category));
     },
     getNewsWithParams: (params: Object): IRequest => {
-        return new IRequest('GET', 'news/?'.concat(Object.keys(params).map(p => p + '=' + params[p] + '&').toString()));
+        return new IRequest('GET', 'news/?'.concat(Object.keys(params).map(p => p + '=' + params[p] + '&').join('')));
     },
     voteNews: (id: string): IRequest => {
         return new IRequest('POST', 'news/vote/', {news: id});
