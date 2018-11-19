@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Project Components
 import Navigation from '../../components/Navigation';
@@ -22,6 +23,7 @@ import List from '../../components/layout/List';
 import ArticleItem from './components/ArticleItem';
 import Flex from '../../components/layout/Flex';
 import FileInput from '../../components/inputs/FileInput';
+import Pagination from '../../components/Pagination';
 
 const styles: Function = (theme) => ({
     root: {
@@ -80,36 +82,60 @@ type P = {
 
 type S = {
     isLoading: bool,
+    isFetching: bool,
     news: Array<Object>,
 }
 
+let page: number = 0;
+let noMorePages: bool = false;
 class Profile extends Component<P, S> {
 
     constructor() {
         super();
         this.state = {
-            isLoading: false,
+            isLoading: true,
+            isFetching: false,
             news: [],
         }
     }
 
-    componentDidMount() {
-        this.fetchNews();
+    componentDidMount(): void {
+        page = 0;
+        noMorePages = false;
+        this.fetchContent();
     }
 
-    fetchNews = async () => {
-
-        this.setState({isLoading: true});
+    fetchContent = async (): Promise<any> => {
         await AuthService.fetchUserInfo((isError: bool, data: Object) => {
 
         });
+        this.fetchNews(true);
+    }
+
+    fetchNews = async (isNotFetching: bool = false): Promise<any> => {
+        // If already fetching or no more pages, return
+        if((this.state.isFetching || noMorePages) && !isNotFetching) {
+            return;
+        }
         
+        if(!isNotFetching) {
+            this.setState({isFetching: true});
+        }
+        
+        // Fetch data
         const id: string = this.props.userInfo ? this.props.userInfo.id : '';
-        NewsService.fetchNewsByUser(id, (isError: bool, data: Array<Object>) => {
+        NewsService.fetchNewsWithParams({user: id, page: page}, (isError: bool, data: Array<Object>) => {
             if(isError === false) {
-                this.setState({news: data});
+                if(data.length === 0) {
+                    noMorePages = true; // No more pages left to fetch
+                } else {
+                    const news: Array<Object> = this.state.news;
+                    const newData: Array<Object> = news.concat(data); // Merge data
+                    this.setState({news: newData}); // Merge
+                }
+                page++;
             }
-            this.setState({isLoading: false});
+            this.setState({isLoading: false, isFetching: false});
         });
     }
 
@@ -142,21 +168,23 @@ class Profile extends Component<P, S> {
 
         return (
             <Navigation isLoading={this.state.isLoading}>
+                <Pagination onscroll={this.fetchNews}>
                 <div className={classes.root}>
                     <div className={classes.content}>
                         <Typography variant='display1' gutterBottom>Your articles</Typography>
                         <Divider />
-
-                        <List>
-                            {news.map((value) => (
-                                <ArticleItem
-                                    key={value._id}
-                                    title={value.title}
-                                    image={value.image}
-                                    time={value.created_at}
-                                    onClick={() => this.goTo(URLS.upload.concat('/', value._id))}/>
-                            ))}
-                        </List>
+                            <List>
+                                {news.map((value) => (
+                                    <ArticleItem
+                                        key={value._id}
+                                        title={value.title}
+                                        image={value.image}
+                                        time={value.created_at}
+                                        onClick={() => this.goTo(URLS.upload.concat('/', value._id))}/>
+                                ))}
+                                {this.state.isFetching && <CircularProgress className={classes.gutter}/>}
+                            </List>
+                            
                         {news.length === 0 &&
                             <Typography
                                 className={classes.margin}
@@ -175,8 +203,8 @@ class Profile extends Component<P, S> {
                         <Typography className={classes.gutter} variant='caption'>{userInfo.nickname}</Typography>
                         <Button className={classes.gutter} variant='contained' color='secondary' onClick={this.logout}>Log out</Button>
                     </Flex>
-                    
                 </div>
+                </Pagination>
             </Navigation>
         )
     }

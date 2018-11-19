@@ -28,8 +28,8 @@ export default class Pagination extends Component<P> {
   };
 
   getScrollTop = (): number => {
-    const scrollTop: any = document && document.scrollTop ? document.scrollTop : 0;
-    const clientTop: any = document && document.clientTop ? document.clientTop : 0;
+    const scrollTop: any = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : 0;
+    const clientTop: any = document.documentElement && document.documentElement.clientTop ? document.documentElement.clientTop : 0;
     return (
         (window.pageYOffset || scrollTop) - (clientTop || 0) ||
         0

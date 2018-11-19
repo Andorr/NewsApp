@@ -8,7 +8,7 @@ import * as NewsActions from '../actions/NewsActions';
 class NewsService {
 
     // Fetch news
-    fetchNews = (callback: Function): Promise<Array<Object>> => {
+    fetchNews = (callback: ?Function): Promise<Array<Object>> => {
         const response = API.getNews().response();
         return response.then((data: Array<Object>) => {
             if(response.isError === false) {
@@ -20,7 +20,7 @@ class NewsService {
     }
 
     // Gets a specific news item based on id
-    fetchNewsItem = (id: string, callback: Function): Promise<Object> => {
+    fetchNewsItem = (id: string, callback: ?Function): Promise<Object> => {
         const response = API.getNewsById(id).response();
         return response.then((data: Object) => {
             if(response.isError === false) {
@@ -31,7 +31,7 @@ class NewsService {
         });
     }
 
-    fetchNewsWithParams = (params: Object, callback: Function): Promise<Array<Object>> => {
+    fetchNewsWithParams = (params: Object, callback: ?Function): Promise<Array<Object>> => {
         const response = API.getNewsWithParams(params).response();
         return response.then((data: Array<Object>) => {
             if(response.isError === false) {
@@ -43,7 +43,7 @@ class NewsService {
     }
 
     // Get news created by user
-    fetchNewsByUser = (userId: string, callback: Function): Promise<Array<Object>> => {
+    fetchNewsByUser = (userId: string, callback: ?Function): Promise<Array<Object>> => {
         const response = API.getNewsByUser(userId).response();
         return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
@@ -52,7 +52,7 @@ class NewsService {
     }
 
     // Get news by category
-    fetchNewsByCategory = (category: string, callback: Function): Promise<Array<Object>> => {
+    fetchNewsByCategory = (category: string, callback: ?Function): Promise<Array<Object>> => {
         const response = API.getNewsByCategory(category).response();
         return response.then((data: Array<Object>) => {
             !callback || callback(response.isError, data);
@@ -61,7 +61,7 @@ class NewsService {
     }
 
     // Creates a news item
-    createNewsItem = (item: Object, callback: Function): Promise<Object> => {
+    createNewsItem = (item: Object, callback: ?Function): Promise<Object> => {
         const response = API.createNews(item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -70,7 +70,7 @@ class NewsService {
     }
 
     // Create a news item with file upload
-    createNewsItemWithFile = (item: Object, callback: Function): Promise<Object> => {
+    createNewsItemWithFile = (item: Object, callback: ?Function): Promise<Object> => {
         const response = API.createNewsWithFile(item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -79,7 +79,7 @@ class NewsService {
     }
 
     // Update a news item
-    updateNewsItem = (id: string, item: Object, callback: Function): Promise<Object> => {
+    updateNewsItem = (id: string, item: Object, callback: ?Function): Promise<Object> => {
         const response = API.updateNews(id, item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -88,7 +88,7 @@ class NewsService {
     }
 
     // Update a news item with file upload
-    updateNewsItemWithFile = (id: string, item: Object, callback: Function): Promise<Object> => {
+    updateNewsItemWithFile = (id: string, item: Object, callback: ?Function): Promise<Object> => {
         const response = API.updateNewsWithFile(id, item).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -97,7 +97,7 @@ class NewsService {
     }
 
     // Delete a news item
-    deleteNewsItem = (id: string, callback: Function): Promise<Object> => {
+    deleteNewsItem = (id: string, callback: ?Function): Promise<Object> => {
         const response = API.deleteNews(id).response();
         return response.then((isError, data) => {
             !callback || callback(response.isError, data);
@@ -106,7 +106,7 @@ class NewsService {
     }
 
     // Comments on a news item
-    createComment = (id: string, comment: string, callback: Function): Promise<Object> => {
+    createComment = (id: string, comment: string, callback: ?Function): Promise<Object> => {
         const dataItem: Object = {news: id, comment: comment};
 
         const response = API.createNewsComment(dataItem).response();
@@ -117,7 +117,7 @@ class NewsService {
     }
 
     // Delete comment
-    deleteComment = (newsId: string, commentId: string, callback: Function): Promise<Object> => {
+    deleteComment = (newsId: string, commentId: string, callback: ?Function): Promise<Object> => {
         const response = API.deleteNewsComment(newsId, commentId).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -126,7 +126,7 @@ class NewsService {
     }
 
     // Update comment
-    updateComment = (newsId: string, commentId: string, comment: string, callback: Function): Promise<Object> => {
+    updateComment = (newsId: string, commentId: string, comment: string, callback: ?Function): Promise<Object> => {
         const response = API.updateNewsComment(newsId, commentId, comment).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -135,7 +135,7 @@ class NewsService {
     }
 
     // Like a post
-    onLikePost = (id: string, callback: Function): Promise<Object> => {
+    onLikePost = (id: string, callback: ?Function): Promise<Object> => {
         const response = API.voteNews(id).response();
         return response.then((data: Object) => {
             !callback || callback(response.isError, data);
@@ -144,7 +144,7 @@ class NewsService {
     }
 
     // Get categories
-    getCategories = (callback: Function): Promise<Array<string>> => {
+    getCategories = (callback: ?Function): Promise<Array<string>> => {
         const response = API.getCategories().response();
         return response.then((data: Object) => {
             const categories: Array<string> = data.categories || [];

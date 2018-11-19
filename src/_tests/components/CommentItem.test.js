@@ -43,6 +43,7 @@ describe('[CommentItem] component', () => {
 
     it('[CommentItem] Testing editButton click', () => {
         const component = shallow(<CommentItem isOwner={true} />).dive();
+
         const createIcon = component.find(Create);
         expect(createIcon.length).toBe(1); // A "create"-icon should appear
 

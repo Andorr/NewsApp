@@ -48,9 +48,14 @@ type S = {
     isFetching: bool,
 };
 
+type P = {
+    classes: Object,
+    news: Array<Object>,
+}
+
 let page: number = 0;
 let noMorePages: bool = false;
-class Landing extends Component<{}, S> {
+class Landing extends Component<P, S> {
 
     constructor() {
         super();
@@ -68,14 +73,14 @@ class Landing extends Component<{}, S> {
 
     resetPage = (): void => {page = 0;}
 
-    fetchData = async (): void => {
+    fetchData = async (): Promise<any> => {
         // Fetch news items
         await NewsService.fetchNewsWithParams({importance: 1, page: page});
         await NewsService.getCategories();
         this.setState({isLoading: false});
     }
 
-    fetchNextPage = async (): void => {
+    fetchNextPage = async (): Promise<any> => {
         // If no more pages to fetch or is already fetching - return
         if(noMorePages || this.state.isFetching) {
             return;
@@ -84,7 +89,7 @@ class Landing extends Component<{}, S> {
         // Fetch new page
         page = page + 1;
         this.setState({isFetching: true});
-        console.log("Fetching page: " + page);
+
         await NewsService.fetchNewsWithParams({importance: 1, page: page})
         .then((data: Array<Object>) => {
             if(data && data.length === 0) { // If no more pages left...
