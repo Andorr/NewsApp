@@ -256,12 +256,12 @@ class Detail extends Component<P, S> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    getNewsItem: (id) => (NewsSelectors.getNewsById(id)(state)),
+const mapStateToProps = (state: any): Object => ({
+    getNewsItem: (id: string) => (NewsSelectors.getNewsById(id)(state)),
     userInfo: UserSelectors.getUserInfo(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any): Object => ({
     setNewsItem: (item: Object) => dispatch(NewsActions.setNewsItem(item)),
     setComment: (newsId: string, comment: string) => dispatch(NewsActions.setComment(newsId, comment)),
     deleteComment: (newsId: string, commentId: string) => dispatch(NewsActions.deleteComment(newsId, commentId)),

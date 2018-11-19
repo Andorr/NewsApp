@@ -7,8 +7,8 @@ import Tabs from '@material-ui/core/Tabs';
 import TextEditor, {ToolbarAction} from '../../components/inputs/TextEditor';
 
 describe('Testing TextEditor', () => {
-    let shallow;
-    let mount;
+    let shallow: ReactWrapper;
+    let mount: ReactWrapper;
 
     beforeEach(() => {
         shallow = createShallow(); // Necassary for Material-UI's "withStyles()"
@@ -16,13 +16,13 @@ describe('Testing TextEditor', () => {
     });
 
     it('[TextEditor] Testing render', () => {
-        const component = shallow(<TextEditor />);
+        const component: ReactWrapper = shallow(<TextEditor />);
         expect(component).toMatchSnapshot();
     });
 
     it('[TextEditor] Testing "appendTextAtCursor()"', () => {
-        let value = '';
-        const onChange = jest.fn((newValue) => value = newValue);
+        let value: string = '';
+        const onChange: Function = jest.fn((newValue) => value = newValue);
         const component: ReactWrapper = mount(<TextEditor value={value} onChange={onChange}/>);
         component.find(ToolbarAction).first().simulate('click'); // Should call appendTextAtCursor()
         expect(onChange).toBeCalled();

@@ -12,7 +12,7 @@ describe('Flex component', () => {
     });
 
     it('[Flex] Testing render', () => {
-        const component = shallow(<Flex />);
+        const component: ReactWrapper = shallow(<Flex />);
         expect(component).toMatchSnapshot();
     });
 });
