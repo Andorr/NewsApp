@@ -267,4 +267,5 @@ const mapDispatchToProps = (dispatch: any): Object => ({
     deleteComment: (newsId: string, commentId: string) => dispatch(NewsActions.deleteComment(newsId, commentId)),
 })
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Detail));

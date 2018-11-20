@@ -144,4 +144,5 @@ const mapStateToProps: Function = (state): Object => ({
     news: NewsSelectors.getNewsByImportance(1)(state),
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps)(withStyles(styles)(Landing));

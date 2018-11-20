@@ -123,4 +123,5 @@ const mapDispatchToProps: Function = (dispatch: Function) => ({
     setNews: (data) => dispatch(NewsActions.setNewsItems(data)),
 })
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Category));
