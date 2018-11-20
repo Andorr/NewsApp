@@ -8,6 +8,7 @@ import {type Match} from '../../types';
 // API and service imports
 import NewsService from '../../store/services/NewsService';
 import * as NewsActions from '../../store/actions/NewsActions';
+import {News, Comment} from '../../store/actions/NewsActions';
 import * as NewsSelector from '../../store/reducers/NewsReducer';
 import * as UserSelector from '../../store/reducers/UserReducer';
 
@@ -141,12 +142,12 @@ class Upload extends Component<P, S> {
         const id: string = this.props.match ? this.props.match.params.id : '';
         if(id) {
             // Get news item by id
-            let news: Object = this.props.getNewsById(id);
+            let news: News = this.props.getNewsById(id);
 
             // If not stored in state, fetch it
             if(!news) {
                 this.setState({isLoading: true});
-                await NewsService.fetchNewsItem(id, (isError, data) => {
+                await NewsService.fetchNewsItem(id, (isError: bool, data: News) => {
                     news = data;
                     this.setState({isLoading: false});
                 });
@@ -235,10 +236,10 @@ class Upload extends Component<P, S> {
         const newsItem = this.getInputData();
         this.setState({isLoading: true});
         
-        let uploadRequest = (newsItem.image)? NewsService.createNewsItemWithFile : NewsService.createNewsItem;
+        let uploadRequest: Function = (newsItem.image)? NewsService.createNewsItemWithFile : NewsService.createNewsItem;
         // Save data
         
-        uploadRequest(newsItem, (isError: bool, data: Object) => {
+        uploadRequest(newsItem, (isError: bool, data: News) => {
             if(isError === false && this.props.history) {
                 this.props.history.push(URLS.detail.concat('/', data._id));
             } else {
@@ -258,12 +259,12 @@ class Upload extends Component<P, S> {
         // Get data
         const newsItem: Object = this.getInputData();
 
-        let uploadRequest = (newsItem.image)? NewsService.updateNewsItemWithFile : NewsService.updateNewsItem;
+        let uploadRequest: Function = (newsItem.image)? NewsService.updateNewsItemWithFile : NewsService.updateNewsItem;
 
         // Save data
         this.setState({isLoading: true});
         const id: string = this.props.match ? this.props.match.params.id : '';
-        uploadRequest(id, newsItem, (isError: bool, data: Object) => {
+        uploadRequest(id, newsItem, (isError: bool, data: News) => {
             if(isError === false && this.props.history) {
                 this.props.setNewsItem(data);
                 this.props.history.push(URLS.detail.concat('/', data._id));
@@ -283,7 +284,7 @@ class Upload extends Component<P, S> {
         // Delete item
         this.setState({isLoading: true});
         const id: string = this.props.match.params.id;
-        NewsService.deleteNewsItem(id, (err: bool, data: Object) => {
+        NewsService.deleteNewsItem(id, (err: bool, data: News) => {
             if(!err) {
                 this.props.deleteNewsItem(id);
                 this.props.history.push(URLS.profile);
@@ -297,7 +298,7 @@ class Upload extends Component<P, S> {
     render() {
         const {classes} = this.props;
         const {isEditing} = this.state;
-        const previewImage = this.state.previewImage || this.state.imageLink;
+        const previewImage: any = this.state.previewImage || this.state.imageLink;
 
         return (
             <Navigation isLoading={this.state.isLoading}>

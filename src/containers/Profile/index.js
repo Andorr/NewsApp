@@ -9,6 +9,7 @@ import {type UserInfo} from '../../types';
 import * as UserSelectors from '../../store/reducers/UserReducer';
 import AuthService from '../../store/services/AuthService';
 import NewsService from '../../store/services/NewsService';
+import {News, Comment} from '../../store/actions/NewsActions';
 
 // Material UI Components
 import Button from '@material-ui/core/Button';
@@ -106,9 +107,7 @@ class Profile extends Component<P, S> {
     }
 
     fetchContent = async (): Promise<any> => {
-        await AuthService.fetchUserInfo((isError: bool, data: Object) => {
-
-        });
+        await AuthService.fetchUserInfo();
         this.fetchNews(true);
     }
 
@@ -124,13 +123,13 @@ class Profile extends Component<P, S> {
         
         // Fetch data
         const id: string = this.props.userInfo ? this.props.userInfo.id : '';
-        NewsService.fetchNewsWithParams({user: id, page: page}, (isError: bool, data: Array<Object>) => {
+        NewsService.fetchNewsWithParams({user: id, page: page}, (isError: bool, data: Array<News>) => {
             if(isError === false) {
                 if(data.length === 0) {
                     noMorePages = true; // No more pages left to fetch
                 } else {
-                    const news: Array<Object> = this.state.news;
-                    const newData: Array<Object> = news.concat(data); // Merge data
+                    const news: Array<News> = this.state.news;
+                    const newData: Array<News> = news.concat(data); // Merge data
                     this.setState({news: newData}); // Merge
                 }
                 page++;
@@ -161,8 +160,8 @@ class Profile extends Component<P, S> {
 
     render() {
         const {classes} = this.props;
-        const news = this.state.news || [];
-        const firstLetter = this.props.userInfo && this.props.userInfo.nickname ? this.props.userInfo.nickname[0] : 'A';
+        const news: Array<News> = this.state.news || [];
+        const firstLetter: string = this.props.userInfo && this.props.userInfo.nickname ? this.props.userInfo.nickname[0] : 'A';
 
         const userInfo = this.props.userInfo || {};
 

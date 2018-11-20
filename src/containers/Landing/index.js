@@ -7,6 +7,7 @@ import {mergeElements} from '../../utils';
 
 // Redux and action imports
 import NewsService from '../../store/services/NewsService';
+import {News, Comment} from '../../store/actions/NewsActions';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI components
@@ -91,7 +92,7 @@ class Landing extends Component<P, S> {
         this.setState({isFetching: true});
 
         await NewsService.fetchNewsWithParams({importance: 1, page: page})
-        .then((data: Array<Object>) => {
+        .then((data: Array<News>) => {
             if(data && data.length === 0) { // If no more pages left...
                 noMorePages = true;         // ...stop fetching
             }
@@ -102,8 +103,8 @@ class Landing extends Component<P, S> {
 
     render() {
         const {classes, news} = this.props;
-        const header = news && news.length > 0 ? news[0] : null;
-        const data = mergeElements(5, news, 1);
+        const header: ?News = news && news.length > 0 ? news[0] : null;
+        const data: Array<News> = mergeElements(5, news, 1);
 
         return (
             <Navigation isLoading={this.state.isLoading} noRenderAtLoad whitesmoke>

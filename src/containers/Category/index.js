@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 // Store and service imports
 import NewsService from '../../store/services/NewsService';
 import * as NewsActions from '../../store/actions/NewsActions';
+import {News, Comment} from '../../store/actions/NewsActions';
 import * as NewsSelector from '../../store/reducers/NewsReducer';
 
 // Material UI Components
@@ -77,10 +78,10 @@ class Category extends React.Component<P, S> {
 
     fetchNewsByCategory = async () => {
         const category: string = this.props.match.params.category;
-        await NewsService.fetchNewsByCategory(category, (isError: bool, data: Array<Object>) => {
+        await NewsService.fetchNewsByCategory(category, (isError: bool, data: Array<News>) => {
             if(isError === false) {
                 this.props.setNews(data);
-                const news = this.props.getNewsByCategory(category) || [];
+                const news: Array<News> = this.props.getNewsByCategory(category) || [];
                 this.setState({news: news});
             }
             this.setState({isLoading: false});
@@ -90,7 +91,7 @@ class Category extends React.Component<P, S> {
     render() {
         const {classes} = this.props;
         const {news} = this.state;
-        const data = mergeElements(6, news, 0);
+        const data: Array<News[]> = mergeElements(6, news, 0);
         const category: string = this.props.match.params.category;
 
         return (
@@ -116,11 +117,11 @@ class Category extends React.Component<P, S> {
 }
 
 const mapStateToProps: Function = (state: Object) => ({
-    getNewsByCategory: (category) => NewsSelector.getNewsByCategory(category)(state),
+    getNewsByCategory: (category): Array<News> => NewsSelector.getNewsByCategory(category)(state),
 });
 
 const mapDispatchToProps: Function = (dispatch: Function) => ({
-    setNews: (data) => dispatch(NewsActions.setNewsItems(data)),
+    setNews: (data): void => dispatch(NewsActions.setNewsItems(data)),
 })
 
 // $FlowFixMe

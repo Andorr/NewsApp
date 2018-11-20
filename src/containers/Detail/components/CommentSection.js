@@ -4,6 +4,9 @@ import {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 
+// Type imports
+import {Comment} from '../../../store/actions/NewsActions';
+
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -33,7 +36,7 @@ type P = {
     onCommentPost?: Function,
     onCommentDelete?: Function,
     onCommentUpdate?: Function,
-    comments?: Array<Object>,
+    comments?: Array<Comment>,
     isAuthorized?: bool,
     userId?: string,
 };
@@ -91,7 +94,7 @@ class CommentSection extends Component<P,S> {
 
     render() {
         const {classes} = this.props;
-        let comments: Array<Object> = (this.props.comments || []).sort((a, b) => b.created_at.localeCompare(a.created_at));
+        let comments: Array<Comment> = (this.props.comments || []).sort((a, b) => b.created_at.localeCompare(a.created_at));
         return (
             <div className={classNames(classes.root, this.props.className)}>
                 <Flex justify='space-between'>

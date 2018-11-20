@@ -1,13 +1,21 @@
+// @flow
 import {actions} from '../actions/UserActions';
 
-const initialState = {
+type UserState = {
+    email: ?string,
+    nickname: ?string,
+    id: ?string,
+    image: ?string,
+}
+
+const initialState: UserState = {
     email: null,
     nickname: null,
     id: null,
     image: null,
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state: UserState = initialState, action: any) => {
     switch(action.type) {
 
         case actions.SET_USER_INFO: {
@@ -21,8 +29,8 @@ const reducer = (state = initialState, action) => {
 }
 
 // --- SELECTORS ---
-const getUserReducer: Object = (state: Object) => state.user;
+const getUserReducer: Function = (state: Object): UserState => state.user;
 
-export const getUserInfo: Object = (state: Object) => ({...getUserReducer(state)});
+export const getUserInfo: Function = (state: Object): UserState => ({...getUserReducer(state)});
 
 export default reducer;

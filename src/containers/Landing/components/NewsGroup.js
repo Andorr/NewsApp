@@ -4,14 +4,15 @@ import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../../URLS';
 
-// Material UI Components
+// Type imports
+import {News} from '../../../store/actions/NewsActions';
 
 // Project Components
 import NewsItem from '../../../components/NewsItem';
 
 type P = {
     classes: Object,
-    data: Array<Object>,
+    data: Array<News>,
     right: boolean,
 }
 
@@ -54,7 +55,7 @@ class NewsGroup extends Component<P> {
 
     render() {
         const {classes, data, right} = this.props;
-        const news: Array<Object> = (data ? data.slice(0, 5) : []);
+        const news: Array<News> = (data ? data.slice(0, 5) : []);
 
         return (
             <div className={classNames(classes.root, right ? '' : classes.left)}>

@@ -84,8 +84,8 @@ class LogInForm extends Component<P, S> {
     login = (event: Object) => {
         event.preventDefault();
 
-        const email = this.state.email;
-        const password = this.state.password;
+        const email: string = this.state.email;
+        const password: string = this.state.password;
 
         // Validate
         this.setState({errors: {email: null, password: null, errorMessage: null}});

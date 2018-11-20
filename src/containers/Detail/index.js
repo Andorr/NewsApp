@@ -10,6 +10,7 @@ import NewsService from '../../store/services/NewsService';
 import AuthService from '../../store/services/AuthService';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 import * as NewsActions from '../../store/actions/NewsActions';
+import {News, Comment} from '../../store/actions/NewsActions';
 import * as UserSelectors from '../../store/reducers/UserReducer';
 
 // Material UI Components
@@ -136,7 +137,7 @@ class Detail extends Component<P, S> {
         // If the article is not fetch, fetch from server
         if(!item) {
             this.setState({isLoading: true});
-            NewsService.fetchNewsItem(id, (isError: bool, data: Object) => {
+            NewsService.fetchNewsItem(id, (isError: bool, data: News) => {
                 if(isError === false) {
                     this.setState({id: data._id});
                 }
@@ -149,7 +150,7 @@ class Detail extends Component<P, S> {
 
     onCommentPost = (comment) => {
         const newsId: string = this.props.match.params.id;
-        NewsService.createComment(newsId, comment, (isError: bool, newComment: Object) => {
+        NewsService.createComment(newsId, comment, (isError: bool, newComment: Comment) => {
             if(isError === false) {
                 this.props.setComment(newsId, newComment);
             }
@@ -158,7 +159,7 @@ class Detail extends Component<P, S> {
 
     onCommentDelete = (commentId: string) => {
         const newsId: string = this.props.match.params.id;
-        NewsService.deleteComment(newsId, commentId, (isError: bool, news: Object) => {
+        NewsService.deleteComment(newsId, commentId, (isError: bool, data: Object) => {
             if(isError === false) {
                 this.props.deleteComment(newsId, commentId);
             }
@@ -167,7 +168,7 @@ class Detail extends Component<P, S> {
 
     onCommentUpdate = (commentId: string, comment: string) => {
         const newsId: string = this.props.match.params.id;
-        NewsService.updateComment(newsId, commentId, comment, (isError: bool, newComment: Object) => {
+        NewsService.updateComment(newsId, commentId, comment, (isError: bool, newComment: Comment) => {
             if(isError === false) {
                 this.props.setComment(newsId, newComment);
             }
@@ -186,7 +187,7 @@ class Detail extends Component<P, S> {
         const isVoted: bool = !newsItem.isVoted;
 
         this.setState({isVoting: true});
-        NewsService.onLikePost(id, (isError: bool, data: Object) => {
+        NewsService.onLikePost(id, (isError: bool, data: News) => {
             // If voted...
             if(isError === false) {
                 // Update news data
@@ -200,8 +201,8 @@ class Detail extends Component<P, S> {
 
     render() {
         const {classes} = this.props;
-        const news = this.props.getNewsItem(this.state.id) || {};
-        const author = news.author || {};
+        const news: News = this.props.getNewsItem(this.state.id) || {};
+        const author: Object = news.author || {};
         const published = news.created_at ? moment(news.created_at, ['YYYY-MM-DD HH:mm'], 'nb') : '';
 
         return (

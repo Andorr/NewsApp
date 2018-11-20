@@ -4,13 +4,15 @@ import API from '../../api/api';
 import store from '../store';
 
 import * as NewsActions from '../actions/NewsActions';
+import {News, Comment} from '../actions/NewsActions';
+
 
 class NewsService {
 
     // Fetch news
-    fetchNews = (callback: ?Function): Promise<Array<Object>> => {
+    fetchNews = (callback: ?Function): Promise<Array<News>> => {
         const response = API.getNews().response();
-        return response.then((data: Array<Object>) => {
+        return response.then((data: Array<News>) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItems(data)); // Add to store
             }
@@ -20,9 +22,9 @@ class NewsService {
     }
 
     // Gets a specific news item based on id
-    fetchNewsItem = (id: string, callback: ?Function): Promise<Object> => {
+    fetchNewsItem = (id: string, callback: ?Function): Promise<News> => {
         const response = API.getNewsById(id).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItem(data)); // Add to store
             }
@@ -31,9 +33,9 @@ class NewsService {
         });
     }
 
-    fetchNewsWithParams = (params: Object, callback: ?Function): Promise<Array<Object>> => {
+    fetchNewsWithParams = (params: Object, callback: ?Function): Promise<Array<News>> => {
         const response = API.getNewsWithParams(params).response();
-        return response.then((data: Array<Object>) => {
+        return response.then((data: Array<News>) => {
             if(response.isError === false) {
                 store.dispatch(NewsActions.setNewsItems(data));
             }
@@ -43,54 +45,54 @@ class NewsService {
     }
 
     // Get news created by user
-    fetchNewsByUser = (userId: string, callback: ?Function): Promise<Array<Object>> => {
+    fetchNewsByUser = (userId: string, callback: ?Function): Promise<Array<News>> => {
         const response = API.getNewsByUser(userId).response();
-        return response.then((data: Array<Object>) => {
+        return response.then((data: Array<News>) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Get news by category
-    fetchNewsByCategory = (category: string, callback: ?Function): Promise<Array<Object>> => {
+    fetchNewsByCategory = (category: string, callback: ?Function): Promise<Array<News>> => {
         const response = API.getNewsByCategory(category).response();
-        return response.then((data: Array<Object>) => {
+        return response.then((data: Array<News>) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Creates a news item
-    createNewsItem = (item: Object, callback: ?Function): Promise<Object> => {
+    createNewsItem = (item: Object, callback: ?Function): Promise<News> => {
         const response = API.createNews(item).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Create a news item with file upload
-    createNewsItemWithFile = (item: Object, callback: ?Function): Promise<Object> => {
+    createNewsItemWithFile = (item: Object, callback: ?Function): Promise<News> => {
         const response = API.createNewsWithFile(item).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             !callback || callback(response.isError, data);
             return data;
         })
     }
 
     // Update a news item
-    updateNewsItem = (id: string, item: Object, callback: ?Function): Promise<Object> => {
+    updateNewsItem = (id: string, item: Object, callback: ?Function): Promise<News> => {
         const response = API.updateNews(id, item).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Update a news item with file upload
-    updateNewsItemWithFile = (id: string, item: Object, callback: ?Function): Promise<Object> => {
+    updateNewsItemWithFile = (id: string, item: Object, callback: ?Function): Promise<News> => {
         const response = API.updateNewsWithFile(id, item).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             !callback || callback(response.isError, data);
             return data;
         });
@@ -99,18 +101,18 @@ class NewsService {
     // Delete a news item
     deleteNewsItem = (id: string, callback: ?Function): Promise<Object> => {
         const response = API.deleteNews(id).response();
-        return response.then((isError, data) => {
+        return response.then((isError: bool, data: Object) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Comments on a news item
-    createComment = (id: string, comment: string, callback: ?Function): Promise<Object> => {
+    createComment = (id: string, comment: string, callback: ?Function): Promise<News> => {
         const dataItem: Object = {news: id, comment: comment};
 
         const response = API.createNewsComment(dataItem).response();
-        return response.then((data: Object) => {
+        return response.then((data: Comment) => {
             !callback || callback(response.isError, data);
             return data;
         });
@@ -126,18 +128,18 @@ class NewsService {
     }
 
     // Update comment
-    updateComment = (newsId: string, commentId: string, comment: string, callback: ?Function): Promise<Object> => {
+    updateComment = (newsId: string, commentId: string, comment: string, callback: ?Function): Promise<Comment> => {
         const response = API.updateNewsComment(newsId, commentId, comment).response();
-        return response.then((data: Object) => {
+        return response.then((data: Comment) => {
             !callback || callback(response.isError, data);
             return data;
         });
     }
 
     // Like a post
-    onLikePost = (id: string, callback: ?Function): Promise<Object> => {
+    onLikePost = (id: string, callback: ?Function): Promise<News> => {
         const response = API.voteNews(id).response();
-        return response.then((data: Object) => {
+        return response.then((data: News) => {
             !callback || callback(response.isError, data);
             return data;
         });

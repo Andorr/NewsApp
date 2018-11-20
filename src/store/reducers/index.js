@@ -4,7 +4,6 @@ import { combineReducers } from 'redux';
 import news from './NewsReducer';
 import user from './UserReducer';
 
-
 export default combineReducers({
     news,
     user,

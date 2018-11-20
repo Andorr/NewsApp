@@ -5,6 +5,9 @@ import moment from 'moment';
 import {Link} from 'react-router-dom';
 import URLS from '../../../URLS';
 
+// Type imports
+import {News} from '../../../store/actions/NewsActions';
+
 // Material UI Components
 import Typograhpy from '@material-ui/core/Typography';
 
@@ -98,7 +101,7 @@ const settings: Object = {
 
 type P = {
     classes: Object,
-    data: Array<Object>,
+    data: Array<News>,
 }
 
 class LiveFeed extends React.Component<P> {
@@ -110,7 +113,7 @@ class LiveFeed extends React.Component<P> {
         this.slider = React.createRef();
     }
 
-    shouldComponentUpdate(nextProps, nextState): bool {
+    shouldComponentUpdate(nextProps: P): bool {
         return this.props.data !== nextProps.data;
     }
 
@@ -120,10 +123,9 @@ class LiveFeed extends React.Component<P> {
         }
     }
 
-
     render() {
         const {classes} = this.props;
-        const data = this.props.data || [];
+        const data: News = this.props.data || [];
         return (
             <div className={classes.root}>
                 <div className={classes.wrapper}>

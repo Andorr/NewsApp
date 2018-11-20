@@ -48,10 +48,38 @@ export const setCategories: Function = (data: Array<string>) =>
 
 // --- Helpers ---
 
-const createNewsItem = (data) => ({
+const createNewsItem: Object = (data) => ({
     id: data._id,
     voteCount: data.vote_count,
     commentCount: (data.comments)? data.comments.length : 0,
     created_at: data.created_at || '',
     ...data,
 });
+
+export class Comment {
+    _id: string;
+    comment: string;
+    user: string;
+    user_nickname: string;
+    created_at: string;
+    updated_at: ?string;
+}
+
+export class News {
+    id: string;
+    title: string;
+    subtitle: string;
+    content: string;
+    created_at: string;
+    image: string;
+    category: string;
+    importance: number;
+    comments: Comment[];
+    isVoted: ?bool;
+    author: {
+        user: string;
+        email: string;
+        nickname: string;
+        image: ?string;
+    };
+}
