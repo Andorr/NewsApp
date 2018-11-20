@@ -9,7 +9,7 @@ import {type UserInfo} from '../../types';
 import * as UserSelectors from '../../store/reducers/UserReducer';
 import AuthService from '../../store/services/AuthService';
 import NewsService from '../../store/services/NewsService';
-import {News, Comment} from '../../store/actions/NewsActions';
+import {News} from '../../store/actions/NewsActions';
 
 // Material UI Components
 import Button from '@material-ui/core/Button';
@@ -148,9 +148,11 @@ class Profile extends Component<P, S> {
     }
 
     onImageChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        // Get profile file
         const inputFile: File = event.target.files[0];
         
         if(inputFile) {
+            // Upload profile image
             this.setState({isLoading: true});
             AuthService.uploadProfileImage(inputFile, (isError: bool, user: Object) => {
                 this.setState({isLoading: false});

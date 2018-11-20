@@ -7,7 +7,7 @@ import {mergeElements} from '../../utils';
 
 // Redux and action imports
 import NewsService from '../../store/services/NewsService';
-import {News, Comment} from '../../store/actions/NewsActions';
+import {News} from '../../store/actions/NewsActions';
 import * as NewsSelectors from '../../store/reducers/NewsReducer';
 
 // Material UI components

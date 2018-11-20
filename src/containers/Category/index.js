@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 // Store and service imports
 import NewsService from '../../store/services/NewsService';
 import * as NewsActions from '../../store/actions/NewsActions';
-import {News, Comment} from '../../store/actions/NewsActions';
+import {News} from '../../store/actions/NewsActions';
 import * as NewsSelector from '../../store/reducers/NewsReducer';
 
 // Material UI Components

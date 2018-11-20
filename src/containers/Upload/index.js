@@ -8,7 +8,7 @@ import {type Match} from '../../types';
 // API and service imports
 import NewsService from '../../store/services/NewsService';
 import * as NewsActions from '../../store/actions/NewsActions';
-import {News, Comment} from '../../store/actions/NewsActions';
+import {News} from '../../store/actions/NewsActions';
 import * as NewsSelector from '../../store/reducers/NewsReducer';
 import * as UserSelector from '../../store/reducers/UserReducer';
 

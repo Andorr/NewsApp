@@ -2,7 +2,7 @@
 import { actions } from '../actions/NewsActions';
 import { keyBy, merge } from 'lodash';
 import moment from 'moment';
-import {News, Comment} from '../actions/NewsActions';
+import {News} from '../actions/NewsActions';
 
 type NewsObject = { 
     [id: string]: News
