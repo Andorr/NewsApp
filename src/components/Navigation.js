@@ -295,11 +295,12 @@ class Navigation extends Component<P, S> {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps: Function = (state) => ({
     userInfo: UserSelectors.getUserInfo(state),
     categories: NewsSelectors.getCategories(state),
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps)(
     withRouter(withStyles(styles)(Navigation))
 );

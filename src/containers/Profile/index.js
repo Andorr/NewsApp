@@ -210,8 +210,9 @@ class Profile extends Component<P, S> {
     }
 }
 
-const mapStoreToProps: Object = (state) => ({
+const mapStoreToProps = (state) => ({
     userInfo: UserSelectors.getUserInfo(state),
 });
 
+// $FlowFixMe
 export default connect(mapStoreToProps)(withStyles(styles)(Profile));

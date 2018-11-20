@@ -401,4 +401,5 @@ const mapDispatchToProps = (dispatch: Function) => ({
     deleteNewsItem: (id: string) => dispatch(NewsActions.deleteNewsItem(id)),
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Upload));
