@@ -17,6 +17,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - run: yarn add flow-bin
       - run: yarn install
 
       - save_cache:
@@ -26,6 +27,7 @@ jobs:
         
       # run tests!
       - run: yarn test -- -u
+      - run: yarn run flow check src
 
 deployment:
   prod:
